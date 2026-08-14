@@ -43,7 +43,8 @@ const Admin: React.FC = () => {
     use_mock_time: '0',
     mock_time: '12:00',
     use_mock_friday: '0',
-    force_screen_mode: 'auto'
+    force_screen_mode: 'auto',
+    running_text_speed: '10'
   });
 
   // Announcements State
@@ -403,6 +404,14 @@ const Admin: React.FC = () => {
                 <div className="mb-4">
                   <label className="block mb-2 text-slate-500 text-sm">Nama Masjid</label>
                   <input type="text" name="mosque_name" value={settings.mosque_name} onChange={handleSettingChange} className="w-full bg-white border border-slate-200 text-slate-900 px-4 py-2.5 rounded-lg focus:outline-none focus:border-dprd-green transition-colors" />
+                </div>
+                <div className="mb-4">
+                  <label className="block mb-2 text-slate-500 text-sm">Kecepatan Running Text</label>
+                  <div className="flex gap-2 items-center">
+                    <input type="range" name="running_text_speed" min="5" max="30" value={settings.running_text_speed || '10'} onChange={handleSettingChange} className="w-full accent-dprd-green" />
+                    <span className="text-slate-600 font-semibold w-8 text-right">{settings.running_text_speed || '10'}</span>
+                  </div>
+                  <p className="text-xs text-slate-500 mt-1">Semakin besar angkanya, semakin cepat jalannya.</p>
                 </div>
                 <div className="mb-4">
                   <label className="block mb-2 text-slate-500 text-sm">URL Stream Mekkah (YouTube Embed)</label>

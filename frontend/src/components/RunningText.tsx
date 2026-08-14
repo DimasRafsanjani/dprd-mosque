@@ -6,7 +6,7 @@ interface Announcement {
   text: string;
 }
 
-export const RunningText: React.FC = () => {
+export const RunningText: React.FC<{ speed?: number }> = ({ speed = 10 }) => {
   const [announcements, setAnnouncements] = useState<Announcement[]>([]);
 
   useEffect(() => {
@@ -28,6 +28,9 @@ export const RunningText: React.FC = () => {
     ? announcements.map(a => a.text).join(' • ')
     : 'Alirkan pahala tanpa putus, Salurkan donasi anda...'; // fallback
 
+  const textLength = joinedText.length + 100; // rough width padding
+  const duration = Math.max(10, Math.floor(textLength / speed)); // seconds based on speed multiplier
+
   return (
     <div className="flex h-[78px] w-full">
       {/* Warning Block */}
@@ -40,7 +43,10 @@ export const RunningText: React.FC = () => {
       {/* Running Text Block */}
       <div className="flex-1 bg-white flex items-center overflow-hidden relative">
         <div className="w-full whitespace-nowrap overflow-hidden flex items-center h-full">
-          <div className="inline-block animate-marquee pl-[100%] font-outfit font-semibold text-[36px] text-black pt-1">
+          <div 
+            className="inline-block animate-marquee pl-[100%] font-outfit font-semibold text-[36px] text-black pt-1"
+            style={{ '--ticker-duration': `${duration}s` } as React.CSSProperties}
+          >
             {joinedText}
           </div>
         </div>

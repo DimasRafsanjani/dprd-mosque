@@ -121,7 +121,8 @@ function seedDefaults() {
       iqamah_isha: '10',
       bg_rotation_interval: '30',
       mecca_stream_url: 'https://www.youtube.com/embed/bB4cjQ9jfCY?autoplay=1&mute=1',
-      adhan_pre_alert_minutes: '5'
+      adhan_pre_alert_minutes: '5',
+      running_text_speed: '10'
     };
 
     const stmt = db.prepare('INSERT INTO settings (key, value) VALUES (?, ?)');

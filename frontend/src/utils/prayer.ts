@@ -14,6 +14,9 @@ export const PRAYER_KEYS = ['fajr', 'sunrise', 'dhuhr', 'asr', 'maghrib', 'isha'
 export interface PrayerSettings {
   latitude?: string;
   longitude?: string;
+  bg_rotation_interval?: string;
+  running_text_speed?: string;
+  slideshow_mode?: string;
   calculation_method?: string;
   madhab?: string;
   timezone?: string;

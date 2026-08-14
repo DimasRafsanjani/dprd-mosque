@@ -234,7 +234,7 @@ const Display: React.FC = () => {
 
           {/* Absolute Running Text at Bottom */}
           <div className="absolute bottom-0 w-full z-30">
-            <RunningText />
+            <RunningText speed={Number(settings?.running_text_speed || 10)} />
           </div>
         </div>
 
