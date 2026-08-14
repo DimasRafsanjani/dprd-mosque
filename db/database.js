@@ -250,7 +250,10 @@ function getCurrentFriday() {
     friday.setDate(friday.getDate() - 1);
   }
 
-  const fridayStr = friday.toISOString().split('T')[0];
+  const year = friday.getFullYear();
+  const month = String(friday.getMonth() + 1).padStart(2, '0');
+  const day = String(friday.getDate()).padStart(2, '0');
+  const fridayStr = `${year}-${month}-${day}`;
 
   return queryOne(`
     SELECT * FROM friday_info 

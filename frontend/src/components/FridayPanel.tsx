@@ -6,7 +6,7 @@ export const FridayPanel: React.FC = () => {
 
   useEffect(() => {
     fetchFridayData();
-    const interval = setInterval(fetchFridayData, 60 * 60 * 1000); // Check every hour
+    const interval = setInterval(fetchFridayData, 10 * 1000); // Check every 10 seconds
     return () => clearInterval(interval);
   }, []);
 
