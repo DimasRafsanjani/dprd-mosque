@@ -37,4 +37,4 @@ jobs:
             
             # Kembali ke root dan restart aplikasi
             cd ..
-            pm2 restart mosque-app
+            pm2 restart mosque-app || pm2 start server.js --name "mosque-app"
