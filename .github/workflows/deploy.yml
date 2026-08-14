@@ -22,7 +22,7 @@ jobs:
           port: 22
           script: |
             # Pindah ke folder project di server
-            cd /var/www/dprd-mosque
+            cd /dprd/dprd-mosque
             
             # Ambil update kode terbaru dari github
             git pull origin main
