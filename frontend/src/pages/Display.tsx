@@ -89,12 +89,13 @@ const Display: React.FC = () => {
 
         if (settings.force_screen_mode && settings.force_screen_mode !== 'auto') {
           const testPrayer = { name: 'Maghrib (Test)', time: new Date(), key: 'maghrib' };
+          const mockCountdown = { hours: 0, minutes: 2, seconds: 0, total: 120000 };
           if (settings.force_screen_mode === 'countdown') {
-            currentState = { state: 'countdown', prayer: testPrayer, countdown: 120 };
+            currentState = { state: 'pre-adhan', prayer: testPrayer, countdown: mockCountdown };
           } else if (settings.force_screen_mode === 'adhan') {
-            currentState = { state: 'adhan', prayer: testPrayer };
+            currentState = { state: 'adhan', prayer: testPrayer, countdown: mockCountdown };
           } else if (settings.force_screen_mode === 'iqamah') {
-            currentState = { state: 'iqamah', prayer: testPrayer, countdown: 300 };
+            currentState = { state: 'iqamah-countdown', prayer: testPrayer, countdown: mockCountdown };
           }
         }
 
