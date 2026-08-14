@@ -25,6 +25,7 @@ jobs:
             cd ~/dprd/dprd-mosque
             
             # Ambil update kode terbaru dari github
+            git reset --hard
             git pull origin main
             
             # Install & update module untuk backend
