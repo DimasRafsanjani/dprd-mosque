@@ -103,6 +103,7 @@ export const Background: React.FC<BackgroundProps> = ({ meccaUrl, onModeChange, 
   if (streamUrl && !streamUrl.includes('mute=1')) streamUrl += '&mute=1';
   if (streamUrl && !streamUrl.includes('controls=0')) streamUrl += '&controls=0&showcontrols=0';
   if (streamUrl && !streamUrl.includes('showinfo=0')) streamUrl += '&showinfo=0';
+  if (streamUrl && !streamUrl.includes('vq=')) streamUrl += '&vq=hd1080';
 
   return (
     <div id="background-layer" className="fixed inset-0 -z-10 bg-black">
