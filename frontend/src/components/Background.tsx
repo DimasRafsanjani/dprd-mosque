@@ -121,7 +121,7 @@ export const Background: React.FC<BackgroundProps> = ({ meccaUrl, onModeChange, 
         className={`absolute inset-0 transition-opacity duration-1000 ease-in-out bg-cover bg-center bg-no-repeat ${currentMode === 'quote' ? 'opacity-100 z-10' : 'opacity-0 z-0'}`}
         style={{ backgroundImage: `url('/assets/template-quotes/Template ${quoteIdx}.png')` }}
       >
-        <div className="absolute right-[80px] top-[325px] w-[841px] flex flex-col items-end text-right">
+        <div className="absolute right-[80px] top-[150px] bottom-[280px] w-[841px] flex flex-col justify-center items-end text-right">
           <div className="w-full">
             {quote?.text_arabic && (
               <div className="font-arabic text-[60px] leading-relaxed mb-[30px] text-black">
