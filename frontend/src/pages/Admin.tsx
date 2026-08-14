@@ -42,7 +42,8 @@ const Admin: React.FC = () => {
     slideshow_manual_slide: 'wallpaper',
     use_mock_time: '0',
     mock_time: '12:00',
-    use_mock_friday: '0'
+    use_mock_friday: '0',
+    force_screen_mode: 'auto'
   });
 
   // Announcements State
@@ -514,6 +515,20 @@ const Admin: React.FC = () => {
                 </div>
                 <p className="text-xs text-slate-500">Jika diaktifkan, panel khusus hari jumat (Khatib dll) akan muncul walaupun hari ini bukan hari jumat.</p>
               </div>
+              <div className="bg-white shadow-sm backdrop-blur-xl border border-slate-200 rounded-2xl p-6">
+                <h3 className="mb-4 text-slate-800 border-b border-slate-200 pb-3 font-medium">Paksa Mode Layar (Testing)</h3>
+                <div className="mb-4">
+                  <label className="block mb-2 text-slate-500 text-sm">Pilih Layar yang Ingin Ditampilkan</label>
+                  <select name="force_screen_mode" value={settings.force_screen_mode || 'auto'} onChange={handleSettingChange} className="w-full bg-white border border-slate-200 text-slate-900 px-4 py-2.5 rounded-lg focus:outline-none focus:border-dprd-green transition-colors">
+                    <option value="auto">Normal (Otomatis ikuti waktu)</option>
+                    <option value="countdown">Menuju Adzan (Hitung Mundur)</option>
+                    <option value="adhan">Layar Berkumandang Adzan</option>
+                    <option value="iqamah">Layar Iqamah (Hitung Mundur)</option>
+                  </select>
+                  <p className="text-xs text-slate-500 mt-2">Guna melihat atau mengedit desain layar peringatan tanpa perlu mengubah jam simulasi.</p>
+                </div>
+              </div>
+
             </div>
             <button type="submit" className="mt-6 bg-dprd-green text-white font-semibold py-3 px-6 rounded-lg hover:bg-emerald-600 transition-colors shadow-lg">Simpan Pengujian</button>
           </form>
