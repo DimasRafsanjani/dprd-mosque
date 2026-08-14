@@ -6,7 +6,8 @@ const config: CapacitorConfig = {
   webDir: 'dist',
   server: {
     url: 'http://masjid.perdinkeuangan.online',
-    cleartext: true
+    cleartext: true,
+    allowNavigation: ["masjid.perdinkeuangan.online", "*.perdinkeuangan.online"]
   }
 };
 
