@@ -334,17 +334,17 @@ const Admin: React.FC = () => {
   }
 
   return (
-    <div className="font-sans bg-slate-50 text-slate-800 min-h-screen flex overflow-x-hidden">
+    <div className="font-sans bg-slate-50 text-slate-800 min-h-screen flex flex-col md:flex-row overflow-x-hidden">
       {/* Sidebar */}
-      <div className="w-[260px] h-screen fixed left-0 top-0 p-6 border-r border-slate-200 bg-white shadow-sm backdrop-blur-xl flex flex-col">
-        <div className="flex h-[97px] items-center gap-1">
-          <img src="/assets/logos/logo-setwan.png" className="h-9 object-contain" />
-          <img src="/assets/logos/logo-dprd-dark.png" className="h-9 object-contain" />
+      <div className="w-full md:w-[260px] h-auto md:h-screen sticky md:fixed left-0 top-0 p-4 md:p-6 border-b md:border-r md:border-b-0 border-slate-200 bg-white shadow-sm backdrop-blur-xl flex flex-col z-50">
+        <div className="flex h-12 md:h-[97px] items-center gap-1 mb-2 md:mb-0">
+          <img src="/assets/logos/logo-setwan.png" className="h-8 md:h-9 object-contain" />
+          <img src="/assets/logos/logo-dprd-dark.png" className="h-8 md:h-9 object-contain" />
         </div>
-        <div className="text-xl font-bold mb-10 text-slate-800 flex items-center gap-3">
+        <div className="text-lg md:text-xl font-bold mb-4 md:mb-10 text-slate-800 flex items-center gap-3">
           Masjid Asy Syura DPRD Jawa Barat
         </div>
-        <ul className="list-none flex flex-col gap-2 flex-1">
+        <ul className="list-none flex flex-row md:flex-col gap-2 md:flex-1 overflow-x-auto whitespace-nowrap pb-2 md:pb-0">
           <li
             className={`px-4 py-3 rounded-lg cursor-pointer transition-colors ${activeTab === 'settings' ? 'bg-dprd-green/10 text-dprd-green font-medium' : 'text-slate-600 hover:bg-slate-100'}`}
             onClick={() => setActiveTab('settings')}
@@ -385,9 +385,9 @@ const Admin: React.FC = () => {
       </div>
 
       {/* Main Content */}
-      <div className="ml-[260px] p-10 w-[calc(100%-260px)] overflow-y-auto">
-        <div className="flex justify-between items-center mb-10">
-          <h2 className="text-3xl font-semibold capitalize">{activeTab === 'settings' ? 'Pengaturan Umum' : activeTab}</h2>
+      <div className="w-full md:ml-[260px] p-4 md:p-10 md:w-[calc(100%-260px)] overflow-y-auto">
+        <div className="flex justify-between items-center mb-6 md:mb-10">
+          <h2 className="text-2xl md:text-3xl font-semibold capitalize">{activeTab === 'settings' ? 'Pengaturan Umum' : activeTab}</h2>
           <button onClick={handleLogout} className="bg-red-500/10 text-red-500 border border-red-500/20 px-4 py-2 rounded-lg cursor-pointer transition-all hover:bg-red-500 hover:text-white">
             Keluar
           </button>
@@ -444,22 +444,22 @@ const Admin: React.FC = () => {
 
               <div className="bg-white shadow-sm backdrop-blur-xl border border-slate-200 rounded-2xl p-6">
                 <h3 className="mb-4 text-slate-800 border-b border-slate-200 pb-3 font-medium">Jeda Iqamah (Menit)</h3>
-                <div className="flex gap-3 mb-4">
-                  <div className="w-1/2">
+                <div className="flex flex-col md:flex-row gap-3 mb-4">
+                  <div className="w-full md:w-1/2">
                     <label className="block mb-2 text-slate-500 text-sm">Subuh</label>
                     <input type="number" name="iqamah_fajr" value={settings.iqamah_fajr || ''} onChange={handleSettingChange} className="w-full bg-white border border-slate-200 text-slate-900 px-4 py-2.5 rounded-lg focus:outline-none focus:border-dprd-green transition-colors" />
                   </div>
-                  <div className="w-1/2">
+                  <div className="w-full md:w-1/2">
                     <label className="block mb-2 text-slate-500 text-sm">Dzuhur</label>
                     <input type="number" name="iqamah_dhuhr" value={settings.iqamah_dhuhr || ''} onChange={handleSettingChange} className="w-full bg-white border border-slate-200 text-slate-900 px-4 py-2.5 rounded-lg focus:outline-none focus:border-dprd-green transition-colors" />
                   </div>
                 </div>
-                <div className="flex gap-3 mb-4">
-                  <div className="w-1/2">
+                <div className="flex flex-col md:flex-row gap-3 mb-4">
+                  <div className="w-full md:w-1/2">
                     <label className="block mb-2 text-slate-500 text-sm">Ashar</label>
                     <input type="number" name="iqamah_asr" value={settings.iqamah_asr || ''} onChange={handleSettingChange} className="w-full bg-white border border-slate-200 text-slate-900 px-4 py-2.5 rounded-lg focus:outline-none focus:border-dprd-green transition-colors" />
                   </div>
-                  <div className="w-1/2">
+                  <div className="w-full md:w-1/2">
                     <label className="block mb-2 text-slate-500 text-sm">Maghrib</label>
                     <input type="number" name="iqamah_maghrib" value={settings.iqamah_maghrib || ''} onChange={handleSettingChange} className="w-full bg-white border border-slate-200 text-slate-900 px-4 py-2.5 rounded-lg focus:outline-none focus:border-dprd-green transition-colors" />
                   </div>
@@ -523,7 +523,7 @@ const Admin: React.FC = () => {
           <div>
             <div className="bg-white shadow-sm backdrop-blur-xl border border-slate-200 rounded-2xl p-6">
               <h3 className="mb-4 text-slate-800 border-b border-slate-200 pb-3 font-medium">Tambah Pengumuman</h3>
-              <form onSubmit={handleAddAnnouncement} className="flex gap-4 items-end">
+              <form onSubmit={handleAddAnnouncement} className="flex flex-col md:flex-row gap-4 md:items-end">
                 <div className="flex-1">
                   <label className="block mb-2 text-slate-500 text-sm">Teks Pengumuman (Running Text)</label>
                   <input type="text" value={newAnnText} onChange={e => setNewAnnText(e.target.value)} className="w-full bg-white border border-slate-200 text-slate-900 px-4 py-2.5 rounded-lg focus:outline-none focus:border-dprd-green transition-colors" required />
@@ -534,7 +534,8 @@ const Admin: React.FC = () => {
 
             <div className="bg-white shadow-sm backdrop-blur-xl border border-slate-200 rounded-2xl p-6 mt-6">
               <h3 className="mb-4 text-slate-800 border-b border-slate-200 pb-3 font-medium">Daftar Pengumuman Aktif</h3>
-              <table className="w-full border-collapse mt-5">
+              <div className="overflow-x-auto">
+              <table className="w-full border-collapse mt-5 min-w-[500px]">
                 <thead>
                   <tr>
                     <th className="p-4 text-left border-b border-slate-200 text-slate-500 font-medium text-sm">Teks</th>
@@ -557,6 +558,7 @@ const Admin: React.FC = () => {
                   )}
                 </tbody>
               </table>
+              </div>
             </div>
           </div>
         )}
@@ -586,7 +588,7 @@ const Admin: React.FC = () => {
 
             <div className="bg-white shadow-sm backdrop-blur-xl border border-slate-200 rounded-2xl p-6 mt-6">
               <h3 className="mb-4 text-slate-800 border-b border-slate-200 pb-3 font-medium">Daftar Quotes (Template background di-assign otomatis 1-5)</h3>
-              <div className="grid grid-cols-[repeat(auto-fill,minmax(350px,1fr))] gap-4 mt-5">
+              <div className="grid grid-cols-1 md:grid-cols-[repeat(auto-fill,minmax(350px,1fr))] gap-4 mt-5">
                 {quotes.map((q) => (
                   <div key={q.id} className="bg-white border border-slate-200 rounded-xl p-4 flex flex-col relative overflow-hidden group">
                     <div className="absolute top-2 right-2 px-2 py-1 bg-slate-100 text-xs rounded-md text-slate-500">Template {(q.id % 5) + 1}</div>
@@ -614,7 +616,7 @@ const Admin: React.FC = () => {
           <div>
             <div className="bg-white shadow-sm backdrop-blur-xl border border-slate-200 rounded-2xl p-6">
               <h3 className="mb-4 text-slate-800 border-b border-slate-200 pb-3 font-medium">Upload Wallpaper Baru</h3>
-              <form onSubmit={handleUploadWallpaper} className="flex gap-4 items-end">
+              <form onSubmit={handleUploadWallpaper} className="flex flex-col md:flex-row gap-4 md:items-end">
                 <div className="flex-1">
                   <label className="block mb-2 text-slate-500 text-sm">Pilih File Gambar (JPG/PNG)</label>
                   <input
@@ -631,7 +633,7 @@ const Admin: React.FC = () => {
 
             <div className="bg-white shadow-sm backdrop-blur-xl border border-slate-200 rounded-2xl p-6 mt-6">
               <h3 className="mb-4 text-slate-800 border-b border-slate-200 pb-3 font-medium">Daftar Wallpaper</h3>
-              <div className="grid grid-cols-[repeat(auto-fill,minmax(250px,1fr))] gap-6 mt-5">
+              <div className="grid grid-cols-1 sm:grid-cols-[repeat(auto-fill,minmax(250px,1fr))] gap-6 mt-5">
                 {wallpapers.map((wp) => (
                   <div key={wp.id} className="bg-white border border-slate-200 rounded-xl overflow-hidden flex flex-col group">
                     <div className="h-[150px] w-full overflow-hidden bg-black/50 relative">
@@ -658,7 +660,7 @@ const Admin: React.FC = () => {
             <div className="bg-white shadow-sm backdrop-blur-xl border border-slate-200 rounded-2xl p-6">
               <h3 className="mb-4 text-slate-800 border-b border-slate-200 pb-3 font-medium">Tambah Data Jumat</h3>
               <form onSubmit={handleAddFriday} className="flex flex-col gap-4">
-                <div className="grid grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
                     <label className="block mb-2 text-slate-500 text-sm">Tanggal (Jumat)</label>
                     <input type="date" value={newFriday.date} onChange={e => setNewFriday({ ...newFriday, date: e.target.value })} className="w-full bg-white border border-slate-200 text-slate-900 px-4 py-2.5 rounded-lg focus:outline-none focus:border-dprd-green transition-colors" required />
@@ -669,7 +671,7 @@ const Admin: React.FC = () => {
                   </div>
                 </div>
 
-                <div className="grid grid-cols-3 gap-4">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                   <div>
                     <label className="block mb-2 text-slate-500 text-sm">Total Pemasukan</label>
                     <div className="relative">
@@ -701,7 +703,8 @@ const Admin: React.FC = () => {
 
             <div className="bg-white shadow-sm backdrop-blur-xl border border-slate-200 rounded-2xl p-6 mt-6">
               <h3 className="mb-4 text-slate-800 border-b border-slate-200 pb-3 font-medium">Riwayat Data Jumat</h3>
-              <table className="w-full border-collapse mt-5">
+              <div className="overflow-x-auto">
+              <table className="w-full border-collapse mt-5 min-w-[700px]">
                 <thead>
                   <tr>
                     <th className="p-4 text-left border-b border-slate-200 text-slate-500 font-medium text-sm">Tanggal</th>
@@ -732,6 +735,7 @@ const Admin: React.FC = () => {
                   )}
                 </tbody>
               </table>
+              </div>
             </div>
           </div>
         )}
