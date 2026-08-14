@@ -130,7 +130,7 @@ const Display: React.FC = () => {
   }
 
   return (
-    <div className="w-screen h-screen bg-black overflow-hidden relative">
+    <div className="w-screen h-screen bg-black overflow-hidden relative select-none">
       <div
         className="font-sans m-0 p-0 overflow-hidden text-white absolute origin-center"
         style={{
@@ -160,9 +160,9 @@ const Display: React.FC = () => {
             </div>
 
             <div className="flex flex-col gap-4 mb-auto mt-30">
-              <div className="font-inter font-black text-[112px] leading-none tabular-nums flex items-baseline whitespace-nowrap">
+              <div className="font-inter font-black text-[112px] leading-none tabular-nums flex items-baseline whitespace-nowrap will-change-contents">
                 <span>{time.hm}</span>
-                <span className="text-[56px] text-white/70 ml-2">:{time.s}</span>
+                <span className="text-[56px] text-white/70 ml-2 inline-block w-[100px] text-left">:{time.s}</span>
               </div>
               <div className="font-outfit font-normal text-3xl">{dateGregorian || 'Memuat Tanggal...'}</div>
               <div className="font-outfit font-normal text-3xl">{dateHijri}</div>
@@ -173,7 +173,7 @@ const Display: React.FC = () => {
               <div className="font-inter font-bold text-[108px] leading-none tracking-tighter tabular-nums text-white">
                 {activeTimeStr}
               </div>
-              <div className="font-inter font-normal text-2xl">
+              <div className="font-inter font-normal text-2xl tabular-nums will-change-contents">
                 dalam {prayerState?.countdown ? formatCountdownText(prayerState.countdown) : '--'}
               </div>
             </div>
