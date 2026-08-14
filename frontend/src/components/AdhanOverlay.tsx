@@ -17,20 +17,20 @@ export const AdhanOverlay: React.FC<AdhanOverlayProps> = ({ state, prayerName, c
 
   if (isFigmaDesign) {
     const title = isPreAdhan ? `Menjelang Azan ${prayerName}` : `Menjelang Iqomah ${prayerName}`;
-    const timeText = countdown 
-      ? (countdown.hours > 0 
-          ? formatCountdown(countdown) 
-          : `${String(countdown.minutes).padStart(2, '0')}:${String(countdown.seconds).padStart(2, '0')}`)
+    const timeText = countdown
+      ? (countdown.hours > 0
+        ? formatCountdown(countdown)
+        : `${String(countdown.minutes).padStart(2, '0')}:${String(countdown.seconds).padStart(2, '0')}`)
       : '00:00';
-    
-    const topRightSvg = isPreAdhan ? '/assets/ornaments/adhan-top-right.svg' : '/assets/ornaments/iqamah-top-right.svg';
-    const bottomLeftSvg = isPreAdhan ? '/assets/ornaments/adhan-bottom-left.svg' : '/assets/ornaments/iqamah-bottom-left.svg';
+
+    const topRightSvg = '/assets/ornaments/top-right.svg';
+    const bottomLeftSvg = '/assets/ornaments/bottom-left.svg';
 
     return (
-      <div id="adhan-overlay" className="fixed inset-0 z-[9999] overflow-hidden bg-[#097969]/80 flex items-center justify-center">
+      <div id="adhan-overlay" className="fixed inset-0 z-[9999] overflow-hidden bg-[#097969]/90  flex items-center justify-center">
         {/* Ornaments */}
-        <img src={topRightSvg} alt="" className="absolute top-0 right-0 pointer-events-none" />
-        <img src={bottomLeftSvg} alt="" className="absolute bottom-0 left-0 pointer-events-none" />
+        <img src={topRightSvg} alt="" className="absolute top-0 right-0 pointer-events-none w-50" />
+        <img src={bottomLeftSvg} alt="" className="absolute bottom-0 left-0 pointer-events-none w-100" />
 
         {/* Content */}
         <div className="flex flex-col items-center justify-center gap-[16px] relative z-10">
