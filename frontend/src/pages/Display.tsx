@@ -10,7 +10,7 @@ import { RunningText } from '../components/RunningText';
 import { AdhanOverlay } from '../components/AdhanOverlay';
 
 const Display: React.FC = () => {
-  const [time, setTime] = useState<string>('00:00');
+  const [time, setTime] = useState<{hm: string, s: string}>({ hm: '00:00', s: '00' });
   const [dateGregorian, setDateGregorian] = useState<string>('');
   const [dateHijri, setDateHijri] = useState<string>('');
   const [settings, setSettings] = useState<PrayerSettings | null>(null);
@@ -79,11 +79,25 @@ const Display: React.FC = () => {
   useEffect(() => {
     const timer = setInterval(() => {
       const now = new Date(Date.now() + timeOffsetMs);
-      setTime(now.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' }).replace('.', ':'));
+      const hmStr = now.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' }).replace('.', ':');
+      const sStr = now.getSeconds().toString().padStart(2, '0');
+      setTime({ hm: hmStr, s: sStr });
 
       if (prayerTimes && settings) {
         // Run state machine every second
-        const currentState = getPrayerState(prayerTimes, settings, now);
+        let currentState = getPrayerState(prayerTimes, settings, now);
+
+        if (settings.force_screen_mode && settings.force_screen_mode !== 'auto') {
+          const testPrayer = { name: 'Maghrib (Test)', time: new Date(), key: 'maghrib' };
+          if (settings.force_screen_mode === 'countdown') {
+            currentState = { state: 'countdown', prayer: testPrayer, countdown: 120 };
+          } else if (settings.force_screen_mode === 'adhan') {
+            currentState = { state: 'adhan', prayer: testPrayer };
+          } else if (settings.force_screen_mode === 'iqamah') {
+            currentState = { state: 'iqamah', prayer: testPrayer, countdown: 300 };
+          }
+        }
+
         setPrayerState(currentState);
 
         // Recalculate at midnight
@@ -145,7 +159,10 @@ const Display: React.FC = () => {
             </div>
 
             <div className="flex flex-col gap-4 mb-auto mt-30">
-              <div className="font-inter font-black text-[128px] leading-none tabular-nums">{time}</div>
+              <div className="font-inter font-black text-[112px] leading-none tabular-nums flex items-baseline whitespace-nowrap">
+                <span>{time.hm}</span>
+                <span className="text-[56px] text-white/70 ml-2">:{time.s}</span>
+              </div>
               <div className="font-outfit font-normal text-3xl">{dateGregorian || 'Memuat Tanggal...'}</div>
               <div className="font-outfit font-normal text-3xl">{dateHijri}</div>
             </div>
