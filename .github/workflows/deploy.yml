@@ -1,0 +1,40 @@
+name: Deploy to VPS
+
+on:
+  push:
+    branches:
+      - main
+      - master
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Deploy to Server via SSH
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.SERVER_IP }}
+          username: ${{ secrets.SERVER_USERNAME }}
+          password: ${{ secrets.SERVER_PASSWORD }}
+          port: 22
+          script: |
+            # Pindah ke folder project di server
+            cd /var/www/dprd-mosque
+            
+            # Ambil update kode terbaru dari github
+            git pull origin main
+            
+            # Install & update module untuk backend
+            npm install
+            
+            # Pindah ke frontend, install & build
+            cd frontend
+            npm install
+            npm run build
+            
+            # Kembali ke root dan restart aplikasi
+            cd ..
+            pm2 restart mosque-app
