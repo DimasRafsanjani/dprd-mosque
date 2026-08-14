@@ -118,9 +118,9 @@ const Display: React.FC = () => {
     <div className="w-screen h-screen bg-black overflow-hidden relative">
       <div
         className="font-sans m-0 p-0 overflow-hidden text-white absolute origin-center"
-        style={{ 
-          width: '1920px', 
-          height: '1080px', 
+        style={{
+          width: '1920px',
+          height: '1080px',
           left: '50%',
           top: '50%',
           transform: `translate(-50%, -50%) scale(${scale})`
@@ -173,9 +173,9 @@ const Display: React.FC = () => {
                 </div>
 
                 {/* Live Mekkah Tag (Moved below the logo) */}
-                <div className={`flex items-center gap-2 bg-[#FF2828]/50 backdrop-blur-md px-4 py-2 rounded-full transition-opacity duration-1000 ${slideshowMode === 'mecca' ? 'opacity-100' : 'opacity-0'}`}>
+                <div className={`flex items-center gap-2 bg-[#FF2828]/50 backdrop-blur-md px-6 py-3 rounded-full transition-opacity duration-1000 ${slideshowMode === 'mecca' ? 'opacity-100' : 'opacity-0'}`}>
                   <div className="w-3 h-3 bg-white rounded-full animate-pulse"></div>
-                  <span className="font-outfit font-medium text-white text-sm">LIVE MEKKAH</span>
+                  <span className="font-outfit font-bold text-white text-3xl">LIVE MEKKAH</span>
                 </div>
               </div>
             </div>
@@ -188,7 +188,7 @@ const Display: React.FC = () => {
             )}
 
             {/* Slideshow Mode Indicator */}
-            <div className="absolute top-[160px] right-[48px] flex flex-col items-center gap-3">
+            <div className="absolute top-[250px] right-[48px] flex flex-col items-center gap-3">
               <div className={`slider-dot ${slideshowMode === 'wallpaper' ? 'active' : ''}`}></div>
               <div className={`slider-dot ${slideshowMode === 'quote' ? 'active' : ''}`}></div>
               <div className={`slider-dot ${slideshowMode === 'mecca' ? 'active' : ''}`}></div>
