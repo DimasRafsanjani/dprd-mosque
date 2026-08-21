@@ -24,7 +24,7 @@ const Admin: React.FC = () => {
 
   // Friday State
   const [fridayRecords, setFridayRecords] = useState<any[]>([]);
-  const [newFriday, setNewFriday] = useState({ date: '', khatib_name: '', khatib_title: '', income: '', expense: '', balance: '' });
+  const [newFriday, setNewFriday] = useState({ date: '', khatib_name: '', khatib_title: '', muadzin_name: '', income: '', expense: '', balance: '' });
 
   // Settings State
   const [settings, setSettings] = useState({
@@ -278,7 +278,7 @@ const Admin: React.FC = () => {
       await axios.post('/api/admin/friday', payload, {
         headers: { 'x-admin-token': token }
       });
-      setNewFriday({ date: '', khatib_name: '', khatib_title: '', income: '', expense: '', balance: '' });
+      setNewFriday({ date: '', khatib_name: '', khatib_title: '', muadzin_name: '', income: '', expense: '', balance: '' });
       showToast('Data Jumat ditambahkan!');
       fetchFridayRecords();
     } catch (err) {
@@ -684,7 +684,7 @@ const Admin: React.FC = () => {
             <div className="bg-white shadow-sm backdrop-blur-xl border border-slate-200 rounded-2xl p-6">
               <h3 className="mb-4 text-slate-800 border-b border-slate-200 pb-3 font-medium">Tambah Data Jumat</h3>
               <form onSubmit={handleAddFriday} className="flex flex-col gap-4">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                   <div>
                     <label className="block mb-2 text-slate-500 text-sm">Tanggal (Jumat)</label>
                     <input type="date" value={newFriday.date} onChange={e => setNewFriday({ ...newFriday, date: e.target.value })} className="w-full bg-white border border-slate-200 text-slate-900 px-4 py-2.5 rounded-lg focus:outline-none focus:border-dprd-green transition-colors" required />
@@ -692,6 +692,10 @@ const Admin: React.FC = () => {
                   <div>
                     <label className="block mb-2 text-slate-500 text-sm">Nama Khatib</label>
                     <input type="text" value={newFriday.khatib_name} onChange={e => setNewFriday({ ...newFriday, khatib_name: e.target.value })} className="w-full bg-white border border-slate-200 text-slate-900 px-4 py-2.5 rounded-lg focus:outline-none focus:border-dprd-green transition-colors" required />
+                  </div>
+                  <div>
+                    <label className="block mb-2 text-slate-500 text-sm">Nama Muadzin</label>
+                    <input type="text" value={newFriday.muadzin_name} onChange={e => setNewFriday({ ...newFriday, muadzin_name: e.target.value })} className="w-full bg-white border border-slate-200 text-slate-900 px-4 py-2.5 rounded-lg focus:outline-none focus:border-dprd-green transition-colors" required />
                   </div>
                 </div>
 
@@ -733,6 +737,7 @@ const Admin: React.FC = () => {
                   <tr>
                     <th className="p-4 text-left border-b border-slate-200 text-slate-500 font-medium text-sm">Tanggal</th>
                     <th className="p-4 text-left border-b border-slate-200 text-slate-500 font-medium text-sm">Khatib</th>
+                    <th className="p-4 text-left border-b border-slate-200 text-slate-500 font-medium text-sm">Muadzin</th>
                     <th className="p-4 text-left border-b border-slate-200 text-slate-500 font-medium text-sm">Pemasukan</th>
                     <th className="p-4 text-left border-b border-slate-200 text-slate-500 font-medium text-sm">Pengeluaran</th>
                     <th className="p-4 text-left border-b border-slate-200 text-slate-500 font-medium text-sm">Kas Saldo</th>
@@ -744,6 +749,7 @@ const Admin: React.FC = () => {
                     <tr key={rec.id}>
                       <td className="p-4 border-b border-slate-100">{rec.date}</td>
                       <td className="p-4 border-b border-slate-100">{rec.khatib_name}</td>
+                      <td className="p-4 border-b border-slate-100">{rec.muadzin_name || '-'}</td>
                       <td className="p-4 border-b border-slate-100">Rp {Number(rec.income).toLocaleString('id-ID')}</td>
                       <td className="p-4 border-b border-slate-100">Rp {Number(rec.expense).toLocaleString('id-ID')}</td>
                       <td className="p-4 border-b border-slate-100">Rp {Number(rec.balance).toLocaleString('id-ID')}</td>
@@ -754,7 +760,7 @@ const Admin: React.FC = () => {
                   ))}
                   {fridayRecords.length === 0 && (
                     <tr>
-                      <td colSpan={6} className="p-4 text-center text-slate-500">Belum ada data Jumat</td>
+                      <td colSpan={7} className="p-4 text-center text-slate-500">Belum ada data Jumat</td>
                     </tr>
                   )}
                 </tbody>

@@ -92,12 +92,19 @@ function initTables() {
       date TEXT NOT NULL,
       khatib_name TEXT NOT NULL,
       khatib_title TEXT,
+      muadzin_name TEXT,
       income REAL DEFAULT 0,
       expense REAL DEFAULT 0,
       balance REAL DEFAULT 0,
       created_at DATETIME DEFAULT CURRENT_TIMESTAMP
     )
   `);
+
+  try {
+    db.run("ALTER TABLE friday_info ADD COLUMN muadzin_name TEXT;");
+  } catch (e) {
+    // ignore if column exists
+  }
 }
 
 function seedDefaults() {

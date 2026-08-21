@@ -184,10 +184,10 @@ router.get('/friday', (req, res) => {
 
 router.post('/friday', (req, res) => {
   try {
-    const { date, khatib_name, khatib_title, income, expense, balance } = req.body;
+    const { date, khatib_name, khatib_title, muadzin_name, income, expense, balance } = req.body;
     runSql(
-      'INSERT INTO friday_info (date, khatib_name, khatib_title, income, expense, balance) VALUES (?, ?, ?, ?, ?, ?)',
-      [date, khatib_name, khatib_title || '', income || 0, expense || 0, balance || 0]
+      'INSERT INTO friday_info (date, khatib_name, khatib_title, muadzin_name, income, expense, balance) VALUES (?, ?, ?, ?, ?, ?, ?)',
+      [date, khatib_name, khatib_title || '', muadzin_name || '', income || 0, expense || 0, balance || 0]
     );
     res.json({ success: true, message: 'Data Jumat berhasil disimpan' });
   } catch (err) {

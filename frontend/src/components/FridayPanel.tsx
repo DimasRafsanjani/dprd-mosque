@@ -32,9 +32,15 @@ export const FridayPanel: React.FC = () => {
 
   return (
     <div className="flex flex-col gap-4 bg-[#097969]/80 backdrop-blur-[30px] p-[24px] rounded-[20px] shadow-lg text-white w-[400px]">
-      <div className="flex flex-col">
-        <span className="font-outfit font-semibold text-[24px] opacity-90">Khatib</span>
-        <span className="font-outfit font-bold text-[32px]">{fridayData.khatib_name || '-'}</span>
+      <div className="flex flex-col gap-3">
+        <div className="flex flex-col">
+          <span className="font-outfit font-semibold text-[24px] opacity-90">Khatib</span>
+          <span className="font-outfit font-bold text-[32px]">{fridayData.khatib_name || '-'}</span>
+        </div>
+        <div className="flex flex-col">
+          <span className="font-outfit font-semibold text-[24px] opacity-90">Muadzin</span>
+          <span className="font-outfit font-bold text-[32px]">{fridayData.muadzin_name || '-'}</span>
+        </div>
       </div>
       
       <div className="h-px bg-white/20 w-full my-2"></div>
@@ -44,14 +50,18 @@ export const FridayPanel: React.FC = () => {
           <span className="font-outfit font-semibold text-[20px] opacity-90">Jumlah Kas</span>
           <span className="font-inter font-bold text-[28px]">{formatRupiah(fridayData.balance || 0)}</span>
         </div>
-        <div className="flex flex-col">
-          <span className="font-outfit font-semibold text-[20px] opacity-90">Jumlah Pemasukan</span>
-          <span className="font-inter font-bold text-[28px]">{formatRupiah(fridayData.income || 0)}</span>
-        </div>
-        <div className="flex flex-col">
-          <span className="font-outfit font-semibold text-[20px] opacity-90">Jumlah Pengeluaran</span>
-          <span className="font-inter font-bold text-[28px]">{formatRupiah(fridayData.expense || 0)}</span>
-        </div>
+        {Number(fridayData.income) > 0 && (
+          <div className="flex flex-col">
+            <span className="font-outfit font-semibold text-[20px] opacity-90">Jumlah Pemasukan</span>
+            <span className="font-inter font-bold text-[28px]">{formatRupiah(fridayData.income)}</span>
+          </div>
+        )}
+        {Number(fridayData.expense) > 0 && (
+          <div className="flex flex-col">
+            <span className="font-outfit font-semibold text-[20px] opacity-90">Jumlah Pengeluaran</span>
+            <span className="font-inter font-bold text-[28px]">{formatRupiah(fridayData.expense)}</span>
+          </div>
+        )}
       </div>
     </div>
   );
