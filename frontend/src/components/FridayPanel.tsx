@@ -31,8 +31,8 @@ export const FridayPanel: React.FC = () => {
   };
 
   return (
-    <div className="flex flex-col gap-4 bg-[#097969]/80 backdrop-blur-[30px] p-[24px] rounded-[20px] shadow-lg text-white w-[400px]">
-      <div className="flex flex-col gap-3">
+    <div className="flex flex-col gap-3 bg-[#097969]/80 backdrop-blur-[30px] p-[24px] rounded-[20px] shadow-lg text-white w-[500px]">
+      <div className="flex flex-col gap-2">
         <div className="flex flex-col">
           <span className="font-outfit font-semibold text-[24px] opacity-90">Khatib</span>
           <span className="font-outfit font-bold text-[32px]">{fridayData.khatib_name || '-'}</span>
@@ -42,9 +42,9 @@ export const FridayPanel: React.FC = () => {
           <span className="font-outfit font-bold text-[32px]">{fridayData.muadzin_name || '-'}</span>
         </div>
       </div>
-      
+
       <div className="h-px bg-white/20 w-full my-2"></div>
-      
+
       <div className="flex flex-col gap-2">
         <div className="flex flex-col">
           <span className="font-outfit font-semibold text-[20px] opacity-90">Jumlah Kas</span>
