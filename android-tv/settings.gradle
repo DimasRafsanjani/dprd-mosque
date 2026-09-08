@@ -1,0 +1,2 @@
+rootProject.name = "dprd-mosque-tv"
+include ':app'

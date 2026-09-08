@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="primary_emerald">#097969</color>
+    <color name="primary_emerald_dark">#05473E</color>
+    <color name="primary_emerald_light">#10A38E</color>
+    <color name="gold_accent">#FBBF24</color>
+    <color name="gold_active">#F59E0B</color>
+
+    <color name="bg_dark">#0F172A</color>
+    <color name="white">#FFFFFF</color>
+    <color name="white_90">#E6FFFFFF</color>
+    <color name="white_80">#CCFFFFFF</color>
+    <color name="white_70">#B3FFFFFF</color>
+    <color name="white_50">#80FFFFFF</color>
+    <color name="white_20">#33FFFFFF</color>
+    <color name="white_10">#1AFFFFFF</color>
+
+    <color name="black">#000000</color>
+    <color name="black_80">#CC000000</color>
+    <color name="black_60">#99000000</color>
+    <color name="black_40">#66000000</color>
+</resources>

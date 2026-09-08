@@ -67,6 +67,43 @@ export function formatTime(date: Date, timezone = 'Asia/Jakarta') {
   }).replace('.', ':');
 }
 
+const HIJRI_MONTHS = [
+  'Muharram', 'Safar', "Rabi'ul Awwal", "Rabi'ul Akhir",
+  'Jumadil Awwal', 'Jumadil Akhir', 'Rajab', "Sya'ban",
+  'Ramadhan', 'Syawwal', "Dzulqa'dah", 'Dzulhijjah'
+];
+
+export function formatHijriDate(date: Date = new Date(), adjustment = 0): string {
+  const targetDate = new Date(date);
+  if (adjustment !== 0) {
+    targetDate.setDate(targetDate.getDate() + adjustment);
+  }
+
+  try {
+    const formatter = new Intl.DateTimeFormat('en-u-ca-islamic-umalqura', {
+      day: 'numeric',
+      month: 'numeric',
+      year: 'numeric'
+    });
+    const parts = formatter.formatToParts(targetDate);
+    let day = '';
+    let month = '';
+    let year = '';
+
+    for (const part of parts) {
+      if (part.type === 'day') day = part.value;
+      if (part.type === 'month') month = part.value;
+      if (part.type === 'year') year = part.value;
+    }
+
+    const monthNum = parseInt(month, 10);
+    const monthName = (monthNum >= 1 && monthNum <= 12) ? HIJRI_MONTHS[monthNum - 1] : 'Safar';
+    return `${day} ${monthName} ${year} H`;
+  } catch (e) {
+    return `${targetDate.getDate()} Safar 1448 H`;
+  }
+}
+
 export function getCountdown(targetTime: Date, now: Date = new Date()) {
   const diff = targetTime.getTime() - now.getTime();
 

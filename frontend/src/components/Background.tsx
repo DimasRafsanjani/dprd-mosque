@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
+import axios, { API_BASE_URL } from '../utils/api';
+import { DEFAULT_WALLPAPERS, DEFAULT_QUOTE } from '../utils/offlineData';
 
 interface BackgroundProps {
   meccaUrl?: string;
@@ -9,8 +10,21 @@ interface BackgroundProps {
 }
 
 export const Background: React.FC<BackgroundProps> = ({ meccaUrl, onModeChange, slideshowMode = 'auto', slideshowManualSlide = 'wallpaper' }) => {
-  const [wallpapers, setWallpapers] = useState<{ filename: string }[]>([]);
-  const [quote, setQuote] = useState<any>(null);
+  const [wallpapers, setWallpapers] = useState<{ filename: string; url?: string }[]>(() => {
+    try {
+      const cached = localStorage.getItem('cache_/api/wallpapers');
+      if (cached) return JSON.parse(cached);
+    } catch (_) {}
+    return DEFAULT_WALLPAPERS;
+  });
+  const [quote, setQuote] = useState<any>(() => {
+    try {
+      const cached = localStorage.getItem('cache_/api/quote');
+      if (cached) return JSON.parse(cached);
+    } catch (_) {}
+    return DEFAULT_QUOTE;
+  });
+  const [isOnline, setIsOnline] = useState(navigator.onLine);
 
   const [modes, setModes] = useState<string[]>(['wallpaper']);
   const [currentModeIdx, setCurrentModeIdx] = useState(0);
@@ -20,15 +34,24 @@ export const Background: React.FC<BackgroundProps> = ({ meccaUrl, onModeChange, 
   useEffect(() => {
     fetchWallpapers();
     fetchQuote();
+
+    const handleOnline = () => setIsOnline(true);
+    const handleOffline = () => setIsOnline(false);
+    window.addEventListener('online', handleOnline);
+    window.addEventListener('offline', handleOffline);
+    return () => {
+      window.removeEventListener('online', handleOnline);
+      window.removeEventListener('offline', handleOffline);
+    };
   }, []);
 
   useEffect(() => {
     const newModes = [];
     newModes.push('wallpaper'); // Base mode always exists
     if (quote?.text_translation || quote?.text_arabic) newModes.push('quote');
-    if (meccaUrl) newModes.push('mecca');
+    if (meccaUrl && isOnline) newModes.push('mecca');
     setModes(newModes);
-  }, [wallpapers, quote, meccaUrl]);
+  }, [wallpapers, quote, meccaUrl, isOnline]);
 
   useEffect(() => {
     if (slideshowMode === 'manual') {
@@ -79,7 +102,8 @@ export const Background: React.FC<BackgroundProps> = ({ meccaUrl, onModeChange, 
   };
 
   const currentMode = modes[currentModeIdx] || 'wallpaper';
-  const currentWallpaper = wallpapers.length > 0 ? `/uploads/${wallpapers[wallpaperIdx]?.filename}` : '/assets/base-wallpaper.png';
+  const hasRemote = isOnline && wallpapers.length > 0 && wallpapers[wallpaperIdx]?.filename && wallpapers[wallpaperIdx].filename !== 'base-wallpaper.png';
+  const currentWallpaper = hasRemote ? `${API_BASE_URL}/uploads/${wallpapers[wallpaperIdx]?.filename}` : '/assets/base-wallpaper.png';
 
   useEffect(() => {
     if (onModeChange) {

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="bg_dark">#0F172A</color>
+    <color name="black">#000000</color>
+    <color name="black_40">#66000000</color>
+    <color name="black_60">#99000000</color>
+    <color name="black_80">#CC000000</color>
+    <color name="gold_accent">#FBBF24</color>
+    <color name="gold_active">#F59E0B</color>
+    <color name="primary_emerald">#097969</color>
+    <color name="primary_emerald_dark">#05473E</color>
+    <color name="primary_emerald_light">#10A38E</color>
+    <color name="white">#FFFFFF</color>
+    <color name="white_10">#1AFFFFFF</color>
+    <color name="white_20">#33FFFFFF</color>
+    <color name="white_50">#80FFFFFF</color>
+    <color name="white_70">#B3FFFFFF</color>
+    <color name="white_80">#CCFFFFFF</color>
+    <color name="white_90">#E6FFFFFF</color>
+    <string name="app_name">Masjid Asy Syura TV</string>
+    <string name="countdown_format">dalam %1$s</string>
+    <string name="mosque_addr_default">Jl. Diponegoro No. 27 Bandung</string>
+    <string name="mosque_name_default">MASJID ASY SYURA</string>
+    <string name="mosque_sub_default">DPRD Provinsi Jawa Barat</string>
+    <string name="prayer_asr">Ashar</string>
+    <string name="prayer_dhuhr">Dzuhur</string>
+    <string name="prayer_fajr">Subuh</string>
+    <string name="prayer_isha">Isya</string>
+    <string name="prayer_maghrib">Maghrib</string>
+    <string name="prayer_sunrise">Syuruq</string>
+    <string name="running_text_default">Selamat Datang di Masjid Asy Syura DPRD Provinsi Jawa Barat • Jagalah Kebersihan &amp; Kesucian Masjid • Luruskan dan Rapatkan Shaf Saat Sholat Berjamaah</string>
+    <string name="towards_prayer">Menuju %1$s</string>
+    <style name="Theme.MosqueTv" parent="Theme.AppCompat.NoActionBar">
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowActionBar">false</item>
+        <item name="android:windowFullscreen">true</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowBackground">@color/bg_dark</item>
+        <item name="colorPrimary">@color/primary_emerald</item>
+        <item name="colorPrimaryDark">@color/primary_emerald_dark</item>
+        <item name="colorAccent">@color/gold_accent</item>
+    </style>
+</resources>

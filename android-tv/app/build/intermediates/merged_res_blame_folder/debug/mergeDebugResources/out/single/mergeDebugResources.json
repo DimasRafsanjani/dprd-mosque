@@ -1,0 +1,38 @@
+[
+    {
+        "merged": "com.dprd.mosque.app-debug-27:/drawable_bg_card_prayer.xml.flat",
+        "source": "com.dprd.mosque.app-main-29:/drawable/bg_card_prayer.xml"
+    },
+    {
+        "merged": "com.dprd.mosque.app-debug-27:/drawable_bg_card_countdown.xml.flat",
+        "source": "com.dprd.mosque.app-main-29:/drawable/bg_card_countdown.xml"
+    },
+    {
+        "merged": "com.dprd.mosque.app-debug-27:/layout_activity_main.xml.flat",
+        "source": "com.dprd.mosque.app-main-29:/layout/activity_main.xml"
+    },
+    {
+        "merged": "com.dprd.mosque.app-debug-27:/drawable_bg_card_prayer_active.xml.flat",
+        "source": "com.dprd.mosque.app-main-29:/drawable/bg_card_prayer_active.xml"
+    },
+    {
+        "merged": "com.dprd.mosque.app-debug-27:/drawable_bg_gradient_sidebar.xml.flat",
+        "source": "com.dprd.mosque.app-main-29:/drawable/bg_gradient_sidebar.xml"
+    },
+    {
+        "merged": "com.dprd.mosque.app-debug-27:/drawable_ic_launcher.xml.flat",
+        "source": "com.dprd.mosque.app-main-29:/drawable/ic_launcher.xml"
+    },
+    {
+        "merged": "com.dprd.mosque.app-debug-27:/drawable_bg_card_glass.xml.flat",
+        "source": "com.dprd.mosque.app-main-29:/drawable/bg_card_glass.xml"
+    },
+    {
+        "merged": "com.dprd.mosque.app-debug-27:/drawable_bg_running_text.xml.flat",
+        "source": "com.dprd.mosque.app-main-29:/drawable/bg_running_text.xml"
+    },
+    {
+        "merged": "com.dprd.mosque.app-debug-27:/drawable_ic_banner_tv.xml.flat",
+        "source": "com.dprd.mosque.app-main-29:/drawable/ic_banner_tv.xml"
+    }
+]

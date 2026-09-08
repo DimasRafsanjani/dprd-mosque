@@ -1,0 +1,23 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="320dp"
+    android:height="180dp"
+    android:viewportWidth="320"
+    android:viewportHeight="180">
+    <path
+        android:fillColor="#097969"
+        android:pathData="M0,0h320v180h-320z"/>
+    <!-- Dome -->
+    <path
+        android:fillColor="#FBBF24"
+        android:pathData="M160,50 C140,50 130,75 130,90 L190,90 C190,75 180,50 160,50 Z"/>
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M125,90 L195,90 L195,130 L125,130 Z"/>
+    <path
+        android:fillColor="#097969"
+        android:pathData="M150,105 L170,105 L170,130 L150,130 Z"/>
+    <!-- Crescent -->
+    <path
+        android:fillColor="#FBBF24"
+        android:pathData="M160,35 A6,6 0 1,1 160,47 A6,6 0 1,1 160,35"/>
+</vector>

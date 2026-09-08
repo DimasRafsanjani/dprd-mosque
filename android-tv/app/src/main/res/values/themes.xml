@@ -1,0 +1,12 @@
+<resources>
+    <style name="Theme.MosqueTv" parent="Theme.AppCompat.NoActionBar">
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowActionBar">false</item>
+        <item name="android:windowFullscreen">true</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowBackground">@color/bg_dark</item>
+        <item name="colorPrimary">@color/primary_emerald</item>
+        <item name="colorPrimaryDark">@color/primary_emerald_dark</item>
+        <item name="colorAccent">@color/gold_accent</item>
+    </style>
+</resources>

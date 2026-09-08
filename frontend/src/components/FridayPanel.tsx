@@ -1,8 +1,15 @@
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
+import axios from '../utils/api';
+import { DEFAULT_FRIDAY } from '../utils/offlineData';
 
 export const FridayPanel: React.FC = () => {
-  const [fridayData, setFridayData] = useState<any>(null);
+  const [fridayData, setFridayData] = useState<any>(() => {
+    try {
+      const cached = localStorage.getItem('cache_/api/friday');
+      if (cached) return JSON.parse(cached);
+    } catch (_) {}
+    return DEFAULT_FRIDAY;
+  });
 
   useEffect(() => {
     fetchFridayData();

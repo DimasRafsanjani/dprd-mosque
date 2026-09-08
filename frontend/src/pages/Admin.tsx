@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
+import axios, { API_BASE_URL } from '../utils/api';
+import axiosOriginal from 'axios';
 
 interface Announcement {
   id: number;
@@ -97,7 +98,7 @@ const Admin: React.FC = () => {
         setSettings(prev => ({ ...prev, ...res.data.data }));
       }
     } catch (err) {
-      if (axios.isAxiosError(err) && err.response?.status === 401) handleLogout();
+      if (axiosOriginal.isAxiosError(err) && err.response?.status === 401) handleLogout();
     }
   };
 
@@ -661,7 +662,7 @@ const Admin: React.FC = () => {
                 {wallpapers.map((wp) => (
                   <div key={wp.id} className="bg-white border border-slate-200 rounded-xl overflow-hidden flex flex-col group">
                     <div className="h-[150px] w-full overflow-hidden bg-black/50 relative">
-                      <img src={`/uploads/${wp.filename}`} alt={wp.original_name} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" />
+                      <img src={`${API_BASE_URL}/uploads/${wp.filename}`} alt={wp.original_name} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" />
                     </div>
                     <div className="p-4 flex flex-col flex-1">
                       <div className="text-slate-800 text-sm font-medium truncate mb-2" title={wp.original_name}>{wp.original_name}</div>

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
-import { calculatePrayerTimes, formatTime, PRAYER_KEYS, PRAYER_NAMES, getPrayerState, formatCountdownText } from '../utils/prayer';
+import axios from '../utils/api';
+import { calculatePrayerTimes, formatTime, formatHijriDate, PRAYER_KEYS, PRAYER_NAMES, getPrayerState, formatCountdownText } from '../utils/prayer';
 import type { PrayerSettings, PrayerState } from '../utils/prayer';
 import { PrayerTimes } from 'adhan';
 
@@ -8,13 +8,29 @@ import { Background } from '../components/Background';
 import { FridayPanel } from '../components/FridayPanel';
 import { RunningText } from '../components/RunningText';
 import { AdhanOverlay } from '../components/AdhanOverlay';
+import { DEFAULT_SETTINGS } from '../utils/offlineData';
 
 const Display: React.FC = () => {
   const [time, setTime] = useState<{hm: string, s: string}>({ hm: '00:00', s: '00' });
   const [dateGregorian, setDateGregorian] = useState<string>('');
   const [dateHijri, setDateHijri] = useState<string>('');
-  const [settings, setSettings] = useState<PrayerSettings | null>(null);
-  const [prayerTimes, setPrayerTimes] = useState<PrayerTimes | null>(null);
+  
+  const [settings, setSettings] = useState<PrayerSettings>(() => {
+    try {
+      const cached = localStorage.getItem('cache_/api/settings');
+      if (cached) return JSON.parse(cached);
+    } catch (_) {}
+    return DEFAULT_SETTINGS;
+  });
+
+  const [prayerTimes, setPrayerTimes] = useState<PrayerTimes | null>(() => {
+    try {
+      const cached = localStorage.getItem('cache_/api/settings');
+      if (cached) return calculatePrayerTimes(JSON.parse(cached));
+    } catch (_) {}
+    return calculatePrayerTimes(DEFAULT_SETTINGS);
+  });
+
   const [prayerState, setPrayerState] = useState<any>({ state: 'normal' });
   const [slideshowMode, setSlideshowMode] = useState('wallpaper');
 
@@ -64,14 +80,16 @@ const Display: React.FC = () => {
     const optionsG: Intl.DateTimeFormatOptions = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
     setDateGregorian(now.toLocaleDateString('id-ID', optionsG));
 
-    // Initial Hijri calculation
+    // Instant Hijri calculation
+    const calcHijri = (adjStr?: string) => {
+      const adjustment = parseInt(adjStr || settings?.hijri_adjustment || '0');
+      setDateHijri(formatHijriDate(now, adjustment));
+    };
+    calcHijri();
+
     axios.get('/api/settings').then(res => {
-      const hijriDate = new Date(now);
-      const adjustment = parseInt(res.data.hijri_adjustment || '0');
-      hijriDate.setDate(hijriDate.getDate() + adjustment);
-      const optionsH: Intl.DateTimeFormatOptions = { year: 'numeric', month: 'long', day: 'numeric', calendar: 'islamic' };
-      setDateHijri(hijriDate.toLocaleDateString('id-ID', optionsH));
-    });
+      calcHijri(res.data?.hijri_adjustment);
+    }).catch(() => {});
 
     return () => clearInterval(interval);
   }, []);
@@ -151,7 +169,7 @@ const Display: React.FC = () => {
         <div id="app-container" className={`absolute text inset-0 flex z-10 transition-opacity duration-1000 ${isAdhanOrIqamah ? 'opacity-0' : 'opacity-100'}`}>
 
           {/* Left Sidebar */}
-          <aside className="w-124.25 h-full flex flex-col justify-between bg-[#097969]/80 backdrop-blur-[30px] p-6 shadow-2xl relative z-20">
+          <aside className="w-[530px] h-full flex flex-col justify-between bg-[#097969]/80 backdrop-blur-[30px] p-6 shadow-2xl relative z-20">
 
             <div className="flex flex-col mt-12 gap-2">
               <h1 className="font-outfit font-bold text-[45px] leading-tight uppercase">{settings?.mosque_name || 'MASJID ASY SYURA'}</h1>
@@ -160,9 +178,9 @@ const Display: React.FC = () => {
             </div>
 
             <div className="flex flex-col gap-4 mb-auto mt-30">
-              <div className="font-inter font-black text-[112px] leading-none tabular-nums flex items-baseline whitespace-nowrap will-change-contents">
+              <div className="font-inter font-black text-[102px] leading-none tabular-nums flex items-baseline whitespace-nowrap will-change-contents">
                 <span>{time.hm}</span>
-                <span className="text-[56px] text-white/70 ml-2 inline-block w-[100px] text-left">:{time.s}</span>
+                <span className="text-[48px] text-white/80 ml-2.5 inline-block w-[85px] text-left">:{time.s}</span>
               </div>
               <div className="font-outfit font-normal text-3xl">{dateGregorian || 'Memuat Tanggal...'}</div>
               <div className="font-outfit font-normal text-3xl">{dateHijri}</div>

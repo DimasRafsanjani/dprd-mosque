@@ -1,0 +1,17 @@
+<resources>
+    <string name="app_name">Masjid Asy Syura TV</string>
+    <string name="mosque_name_default">MASJID ASY SYURA</string>
+    <string name="mosque_sub_default">DPRD Provinsi Jawa Barat</string>
+    <string name="mosque_addr_default">Jl. Diponegoro No. 27 Bandung</string>
+
+    <string name="prayer_fajr">Subuh</string>
+    <string name="prayer_sunrise">Syuruq</string>
+    <string name="prayer_dhuhr">Dzuhur</string>
+    <string name="prayer_asr">Ashar</string>
+    <string name="prayer_maghrib">Maghrib</string>
+    <string name="prayer_isha">Isya</string>
+
+    <string name="towards_prayer">Menuju %1$s</string>
+    <string name="countdown_format">dalam %1$s</string>
+    <string name="running_text_default">Selamat Datang di Masjid Asy Syura DPRD Provinsi Jawa Barat • Jagalah Kebersihan &amp; Kesucian Masjid • Luruskan dan Rapatkan Shaf Saat Sholat Berjamaah</string>
+</resources>

@@ -1,3 +1,5 @@
+@import "@fontsource/inter";
+@import "@fontsource/outfit";
 @import "tailwindcss";
 @config "../tailwind.config.js";
 
@@ -27,12 +29,12 @@
 }
 
 @theme {
-  --animate-marquee: marquee 20s linear infinite;
+  --animate-marquee: marquee var(--ticker-duration, 90s) linear infinite;
 }
 
 @keyframes marquee {
   0% {
-    transform: translateX(100%);
+    transform: translateX(0%);
   }
 
   100% {

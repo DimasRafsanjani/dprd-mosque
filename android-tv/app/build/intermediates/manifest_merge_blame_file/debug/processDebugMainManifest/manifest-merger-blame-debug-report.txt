@@ -1,0 +1,189 @@
+1<?xml version="1.0" encoding="utf-8"?>
+2<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+3    package="com.dprd.mosque.tv"
+4    android:versionCode="1"
+5    android:versionName="1.0.0" >
+6
+7    <uses-sdk
+8        android:minSdkVersion="21"
+9        android:targetSdkVersion="35" />
+10
+11    <!-- TV Features -->
+12    <uses-feature
+12-->D:\Work\dprd-mosque\android-tv\app\src\main\AndroidManifest.xml:5:5-7:36
+13        android:name="android.software.leanback"
+13-->D:\Work\dprd-mosque\android-tv\app\src\main\AndroidManifest.xml:6:9-49
+14        android:required="false" />
+14-->D:\Work\dprd-mosque\android-tv\app\src\main\AndroidManifest.xml:7:9-33
+15    <uses-feature
+15-->D:\Work\dprd-mosque\android-tv\app\src\main\AndroidManifest.xml:8:5-10:36
+16        android:name="android.hardware.touchscreen"
+16-->D:\Work\dprd-mosque\android-tv\app\src\main\AndroidManifest.xml:9:9-52
+17        android:required="false" />
+17-->D:\Work\dprd-mosque\android-tv\app\src\main\AndroidManifest.xml:10:9-33
+18
+19    <!-- Permissions -->
+20    <uses-permission android:name="android.permission.INTERNET" />
+20-->D:\Work\dprd-mosque\android-tv\app\src\main\AndroidManifest.xml:13:5-67
+20-->D:\Work\dprd-mosque\android-tv\app\src\main\AndroidManifest.xml:13:22-64
+21    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+21-->D:\Work\dprd-mosque\android-tv\app\src\main\AndroidManifest.xml:14:5-79
+21-->D:\Work\dprd-mosque\android-tv\app\src\main\AndroidManifest.xml:14:22-76
+22    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+22-->D:\Work\dprd-mosque\android-tv\app\src\main\AndroidManifest.xml:15:5-81
+22-->D:\Work\dprd-mosque\android-tv\app\src\main\AndroidManifest.xml:15:22-78
+23    <uses-permission android:name="android.permission.WAKE_LOCK" />
+23-->D:\Work\dprd-mosque\android-tv\app\src\main\AndroidManifest.xml:16:5-68
+23-->D:\Work\dprd-mosque\android-tv\app\src\main\AndroidManifest.xml:16:22-65
+24
+25    <permission
+25-->[androidx.core:core:1.13.1] C:\Users\Pan\.gradle\caches\8.14.3\transforms\c462dbeae6a3ea7b192bc835e8b01557\transformed\core-1.13.1\AndroidManifest.xml:22:5-24:47
+26        android:name="com.dprd.mosque.tv.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION"
+26-->[androidx.core:core:1.13.1] C:\Users\Pan\.gradle\caches\8.14.3\transforms\c462dbeae6a3ea7b192bc835e8b01557\transformed\core-1.13.1\AndroidManifest.xml:23:9-81
+27        android:protectionLevel="signature" />
+27-->[androidx.core:core:1.13.1] C:\Users\Pan\.gradle\caches\8.14.3\transforms\c462dbeae6a3ea7b192bc835e8b01557\transformed\core-1.13.1\AndroidManifest.xml:24:9-44
+28
+29    <uses-permission android:name="com.dprd.mosque.tv.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION" />
+29-->[androidx.core:core:1.13.1] C:\Users\Pan\.gradle\caches\8.14.3\transforms\c462dbeae6a3ea7b192bc835e8b01557\transformed\core-1.13.1\AndroidManifest.xml:26:5-97
+29-->[androidx.core:core:1.13.1] C:\Users\Pan\.gradle\caches\8.14.3\transforms\c462dbeae6a3ea7b192bc835e8b01557\transformed\core-1.13.1\AndroidManifest.xml:26:22-94
+30
+31    <application
+31-->D:\Work\dprd-mosque\android-tv\app\src\main\AndroidManifest.xml:18:5-53:19
+32        android:name="com.dprd.mosque.App"
+32-->D:\Work\dprd-mosque\android-tv\app\src\main\AndroidManifest.xml:19:9-28
+33        android:allowBackup="true"
+33-->D:\Work\dprd-mosque\android-tv\app\src\main\AndroidManifest.xml:20:9-35
+34        android:appComponentFactory="androidx.core.app.CoreComponentFactory"
+34-->[androidx.core:core:1.13.1] C:\Users\Pan\.gradle\caches\8.14.3\transforms\c462dbeae6a3ea7b192bc835e8b01557\transformed\core-1.13.1\AndroidManifest.xml:28:18-86
+35        android:banner="@drawable/ic_banner_tv"
+35-->D:\Work\dprd-mosque\android-tv\app\src\main\AndroidManifest.xml:22:9-48
+36        android:debuggable="true"
+37        android:extractNativeLibs="true"
+38        android:icon="@drawable/ic_launcher"
+38-->D:\Work\dprd-mosque\android-tv\app\src\main\AndroidManifest.xml:21:9-45
+39        android:label="@string/app_name"
+39-->D:\Work\dprd-mosque\android-tv\app\src\main\AndroidManifest.xml:23:9-41
+40        android:supportsRtl="true"
+40-->D:\Work\dprd-mosque\android-tv\app\src\main\AndroidManifest.xml:24:9-35
+41        android:theme="@style/Theme.MosqueTv"
+41-->D:\Work\dprd-mosque\android-tv\app\src\main\AndroidManifest.xml:25:9-46
+42        android:usesCleartextTraffic="true" >
+42-->D:\Work\dprd-mosque\android-tv\app\src\main\AndroidManifest.xml:26:9-44
+43        <activity
+43-->D:\Work\dprd-mosque\android-tv\app\src\main\AndroidManifest.xml:28:9-39:20
+44            android:name="com.dprd.mosque.ui.MainActivity"
+44-->D:\Work\dprd-mosque\android-tv\app\src\main\AndroidManifest.xml:29:13-44
+45            android:configChanges="orientation|screenSize|screenLayout|keyboardHidden"
+45-->D:\Work\dprd-mosque\android-tv\app\src\main\AndroidManifest.xml:33:13-87
+46            android:exported="true"
+46-->D:\Work\dprd-mosque\android-tv\app\src\main\AndroidManifest.xml:30:13-36
+47            android:launchMode="singleTask"
+47-->D:\Work\dprd-mosque\android-tv\app\src\main\AndroidManifest.xml:31:13-44
+48            android:screenOrientation="sensorLandscape" >
+48-->D:\Work\dprd-mosque\android-tv\app\src\main\AndroidManifest.xml:32:13-56
+49            <intent-filter>
+49-->D:\Work\dprd-mosque\android-tv\app\src\main\AndroidManifest.xml:34:13-38:29
+50                <action android:name="android.intent.action.MAIN" />
+50-->D:\Work\dprd-mosque\android-tv\app\src\main\AndroidManifest.xml:35:17-69
+50-->D:\Work\dprd-mosque\android-tv\app\src\main\AndroidManifest.xml:35:25-66
+51
+52                <category android:name="android.intent.category.LAUNCHER" />
+52-->D:\Work\dprd-mosque\android-tv\app\src\main\AndroidManifest.xml:36:17-77
+52-->D:\Work\dprd-mosque\android-tv\app\src\main\AndroidManifest.xml:36:27-74
+53                <category android:name="android.intent.category.LEANBACK_LAUNCHER" />
+53-->D:\Work\dprd-mosque\android-tv\app\src\main\AndroidManifest.xml:37:17-86
+53-->D:\Work\dprd-mosque\android-tv\app\src\main\AndroidManifest.xml:37:27-83
+54            </intent-filter>
+55        </activity>
+56
+57        <!-- Auto start on TV boot -->
+58        <receiver
+58-->D:\Work\dprd-mosque\android-tv\app\src\main\AndroidManifest.xml:42:9-51:20
+59            android:name="com.dprd.mosque.receiver.BootReceiver"
+59-->D:\Work\dprd-mosque\android-tv\app\src\main\AndroidManifest.xml:43:13-50
+60            android:enabled="true"
+60-->D:\Work\dprd-mosque\android-tv\app\src\main\AndroidManifest.xml:44:13-35
+61            android:exported="true" >
+61-->D:\Work\dprd-mosque\android-tv\app\src\main\AndroidManifest.xml:45:13-36
+62            <intent-filter>
+62-->D:\Work\dprd-mosque\android-tv\app\src\main\AndroidManifest.xml:46:13-50:29
+63                <action android:name="android.intent.action.BOOT_COMPLETED" />
+63-->D:\Work\dprd-mosque\android-tv\app\src\main\AndroidManifest.xml:47:17-79
+63-->D:\Work\dprd-mosque\android-tv\app\src\main\AndroidManifest.xml:47:25-76
+64                <action android:name="android.intent.action.QUICKBOOT_POWERON" />
+64-->D:\Work\dprd-mosque\android-tv\app\src\main\AndroidManifest.xml:48:17-82
+64-->D:\Work\dprd-mosque\android-tv\app\src\main\AndroidManifest.xml:48:25-79
+65                <action android:name="com.htc.intent.action.QUICKBOOT_POWERON" />
+65-->D:\Work\dprd-mosque\android-tv\app\src\main\AndroidManifest.xml:49:17-82
+65-->D:\Work\dprd-mosque\android-tv\app\src\main\AndroidManifest.xml:49:25-79
+66            </intent-filter>
+67        </receiver>
+68
+69        <provider
+69-->[androidx.emoji2:emoji2:1.3.0] C:\Users\Pan\.gradle\caches\8.14.3\transforms\570163f0932560f64a3635f531f53d13\transformed\jetified-emoji2-1.3.0\AndroidManifest.xml:24:9-32:20
+70            android:name="androidx.startup.InitializationProvider"
+70-->[androidx.emoji2:emoji2:1.3.0] C:\Users\Pan\.gradle\caches\8.14.3\transforms\570163f0932560f64a3635f531f53d13\transformed\jetified-emoji2-1.3.0\AndroidManifest.xml:25:13-67
+71            android:authorities="com.dprd.mosque.tv.androidx-startup"
+71-->[androidx.emoji2:emoji2:1.3.0] C:\Users\Pan\.gradle\caches\8.14.3\transforms\570163f0932560f64a3635f531f53d13\transformed\jetified-emoji2-1.3.0\AndroidManifest.xml:26:13-68
+72            android:exported="false" >
+72-->[androidx.emoji2:emoji2:1.3.0] C:\Users\Pan\.gradle\caches\8.14.3\transforms\570163f0932560f64a3635f531f53d13\transformed\jetified-emoji2-1.3.0\AndroidManifest.xml:27:13-37
+73            <meta-data
+73-->[androidx.emoji2:emoji2:1.3.0] C:\Users\Pan\.gradle\caches\8.14.3\transforms\570163f0932560f64a3635f531f53d13\transformed\jetified-emoji2-1.3.0\AndroidManifest.xml:29:13-31:52
+74                android:name="androidx.emoji2.text.EmojiCompatInitializer"
+74-->[androidx.emoji2:emoji2:1.3.0] C:\Users\Pan\.gradle\caches\8.14.3\transforms\570163f0932560f64a3635f531f53d13\transformed\jetified-emoji2-1.3.0\AndroidManifest.xml:30:17-75
+75                android:value="androidx.startup" />
+75-->[androidx.emoji2:emoji2:1.3.0] C:\Users\Pan\.gradle\caches\8.14.3\transforms\570163f0932560f64a3635f531f53d13\transformed\jetified-emoji2-1.3.0\AndroidManifest.xml:31:17-49
+76            <meta-data
+76-->[androidx.lifecycle:lifecycle-process:2.8.6] C:\Users\Pan\.gradle\caches\8.14.3\transforms\07b88b64312ec8856f999f8ceefb29be\transformed\jetified-lifecycle-process-2.8.6\AndroidManifest.xml:29:13-31:52
+77                android:name="androidx.lifecycle.ProcessLifecycleInitializer"
+77-->[androidx.lifecycle:lifecycle-process:2.8.6] C:\Users\Pan\.gradle\caches\8.14.3\transforms\07b88b64312ec8856f999f8ceefb29be\transformed\jetified-lifecycle-process-2.8.6\AndroidManifest.xml:30:17-78
+78                android:value="androidx.startup" />
+78-->[androidx.lifecycle:lifecycle-process:2.8.6] C:\Users\Pan\.gradle\caches\8.14.3\transforms\07b88b64312ec8856f999f8ceefb29be\transformed\jetified-lifecycle-process-2.8.6\AndroidManifest.xml:31:17-49
+79            <meta-data
+79-->[androidx.profileinstaller:profileinstaller:1.4.0] C:\Users\Pan\.gradle\caches\8.14.3\transforms\1d2d856ff494fc0c94f56c19b98d304b\transformed\jetified-profileinstaller-1.4.0\AndroidManifest.xml:29:13-31:52
+80                android:name="androidx.profileinstaller.ProfileInstallerInitializer"
+80-->[androidx.profileinstaller:profileinstaller:1.4.0] C:\Users\Pan\.gradle\caches\8.14.3\transforms\1d2d856ff494fc0c94f56c19b98d304b\transformed\jetified-profileinstaller-1.4.0\AndroidManifest.xml:30:17-85
+81                android:value="androidx.startup" />
+81-->[androidx.profileinstaller:profileinstaller:1.4.0] C:\Users\Pan\.gradle\caches\8.14.3\transforms\1d2d856ff494fc0c94f56c19b98d304b\transformed\jetified-profileinstaller-1.4.0\AndroidManifest.xml:31:17-49
+82        </provider>
+83
+84        <receiver
+84-->[androidx.profileinstaller:profileinstaller:1.4.0] C:\Users\Pan\.gradle\caches\8.14.3\transforms\1d2d856ff494fc0c94f56c19b98d304b\transformed\jetified-profileinstaller-1.4.0\AndroidManifest.xml:34:9-52:20
+85            android:name="androidx.profileinstaller.ProfileInstallReceiver"
+85-->[androidx.profileinstaller:profileinstaller:1.4.0] C:\Users\Pan\.gradle\caches\8.14.3\transforms\1d2d856ff494fc0c94f56c19b98d304b\transformed\jetified-profileinstaller-1.4.0\AndroidManifest.xml:35:13-76
+86            android:directBootAware="false"
+86-->[androidx.profileinstaller:profileinstaller:1.4.0] C:\Users\Pan\.gradle\caches\8.14.3\transforms\1d2d856ff494fc0c94f56c19b98d304b\transformed\jetified-profileinstaller-1.4.0\AndroidManifest.xml:36:13-44
+87            android:enabled="true"
+87-->[androidx.profileinstaller:profileinstaller:1.4.0] C:\Users\Pan\.gradle\caches\8.14.3\transforms\1d2d856ff494fc0c94f56c19b98d304b\transformed\jetified-profileinstaller-1.4.0\AndroidManifest.xml:37:13-35
+88            android:exported="true"
+88-->[androidx.profileinstaller:profileinstaller:1.4.0] C:\Users\Pan\.gradle\caches\8.14.3\transforms\1d2d856ff494fc0c94f56c19b98d304b\transformed\jetified-profileinstaller-1.4.0\AndroidManifest.xml:38:13-36
+89            android:permission="android.permission.DUMP" >
+89-->[androidx.profileinstaller:profileinstaller:1.4.0] C:\Users\Pan\.gradle\caches\8.14.3\transforms\1d2d856ff494fc0c94f56c19b98d304b\transformed\jetified-profileinstaller-1.4.0\AndroidManifest.xml:39:13-57
+90            <intent-filter>
+90-->[androidx.profileinstaller:profileinstaller:1.4.0] C:\Users\Pan\.gradle\caches\8.14.3\transforms\1d2d856ff494fc0c94f56c19b98d304b\transformed\jetified-profileinstaller-1.4.0\AndroidManifest.xml:40:13-42:29
+91                <action android:name="androidx.profileinstaller.action.INSTALL_PROFILE" />
+91-->[androidx.profileinstaller:profileinstaller:1.4.0] C:\Users\Pan\.gradle\caches\8.14.3\transforms\1d2d856ff494fc0c94f56c19b98d304b\transformed\jetified-profileinstaller-1.4.0\AndroidManifest.xml:41:17-91
+91-->[androidx.profileinstaller:profileinstaller:1.4.0] C:\Users\Pan\.gradle\caches\8.14.3\transforms\1d2d856ff494fc0c94f56c19b98d304b\transformed\jetified-profileinstaller-1.4.0\AndroidManifest.xml:41:25-88
+92            </intent-filter>
+93            <intent-filter>
+93-->[androidx.profileinstaller:profileinstaller:1.4.0] C:\Users\Pan\.gradle\caches\8.14.3\transforms\1d2d856ff494fc0c94f56c19b98d304b\transformed\jetified-profileinstaller-1.4.0\AndroidManifest.xml:43:13-45:29
+94                <action android:name="androidx.profileinstaller.action.SKIP_FILE" />
+94-->[androidx.profileinstaller:profileinstaller:1.4.0] C:\Users\Pan\.gradle\caches\8.14.3\transforms\1d2d856ff494fc0c94f56c19b98d304b\transformed\jetified-profileinstaller-1.4.0\AndroidManifest.xml:44:17-85
+94-->[androidx.profileinstaller:profileinstaller:1.4.0] C:\Users\Pan\.gradle\caches\8.14.3\transforms\1d2d856ff494fc0c94f56c19b98d304b\transformed\jetified-profileinstaller-1.4.0\AndroidManifest.xml:44:25-82
+95            </intent-filter>
+96            <intent-filter>
+96-->[androidx.profileinstaller:profileinstaller:1.4.0] C:\Users\Pan\.gradle\caches\8.14.3\transforms\1d2d856ff494fc0c94f56c19b98d304b\transformed\jetified-profileinstaller-1.4.0\AndroidManifest.xml:46:13-48:29
+97                <action android:name="androidx.profileinstaller.action.SAVE_PROFILE" />
+97-->[androidx.profileinstaller:profileinstaller:1.4.0] C:\Users\Pan\.gradle\caches\8.14.3\transforms\1d2d856ff494fc0c94f56c19b98d304b\transformed\jetified-profileinstaller-1.4.0\AndroidManifest.xml:47:17-88
+97-->[androidx.profileinstaller:profileinstaller:1.4.0] C:\Users\Pan\.gradle\caches\8.14.3\transforms\1d2d856ff494fc0c94f56c19b98d304b\transformed\jetified-profileinstaller-1.4.0\AndroidManifest.xml:47:25-85
+98            </intent-filter>
+99            <intent-filter>
+99-->[androidx.profileinstaller:profileinstaller:1.4.0] C:\Users\Pan\.gradle\caches\8.14.3\transforms\1d2d856ff494fc0c94f56c19b98d304b\transformed\jetified-profileinstaller-1.4.0\AndroidManifest.xml:49:13-51:29
+100                <action android:name="androidx.profileinstaller.action.BENCHMARK_OPERATION" />
+100-->[androidx.profileinstaller:profileinstaller:1.4.0] C:\Users\Pan\.gradle\caches\8.14.3\transforms\1d2d856ff494fc0c94f56c19b98d304b\transformed\jetified-profileinstaller-1.4.0\AndroidManifest.xml:50:17-95
+100-->[androidx.profileinstaller:profileinstaller:1.4.0] C:\Users\Pan\.gradle\caches\8.14.3\transforms\1d2d856ff494fc0c94f56c19b98d304b\transformed\jetified-profileinstaller-1.4.0\AndroidManifest.xml:50:25-92
+101            </intent-filter>
+102        </receiver>
+103    </application>
+104
+105</manifest>
