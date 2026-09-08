@@ -13,8 +13,9 @@ app.use(express.urlencoded({ extended: true }));
 // Serve static files from React Frontend build
 app.use(express.static(path.join(__dirname, 'frontend/dist')));
 
-// Serve uploaded wallpapers
+// Serve uploaded wallpapers and static downloads
 app.use('/uploads', express.static(path.join(__dirname, 'public', 'uploads')));
+app.use('/downloads', express.static(path.join(__dirname, 'public', 'downloads')));
 
 // API routes
 app.use('/api/admin', require('./routes/admin'));

@@ -391,9 +391,18 @@ const Admin: React.FC = () => {
       <div className="w-full md:ml-[260px] p-4 md:p-10 md:w-[calc(100%-260px)] overflow-y-auto">
         <div className="flex justify-between items-center mb-6 md:mb-10">
           <h2 className="text-2xl md:text-3xl font-semibold capitalize">{activeTab === 'settings' ? 'Pengaturan Umum' : activeTab}</h2>
-          <button onClick={handleLogout} className="bg-red-500/10 text-red-500 border border-red-500/20 px-4 py-2 rounded-lg cursor-pointer transition-all hover:bg-red-500 hover:text-white">
-            Keluar
-          </button>
+          <div className="flex items-center gap-3">
+            <a 
+              href="/downloads/mosque-tv.apk" 
+              download="mosque-tv.apk" 
+              className="bg-emerald-600/10 text-emerald-700 border border-emerald-500/20 px-4 py-2 rounded-lg transition-all hover:bg-emerald-600 hover:text-white font-medium flex items-center gap-1.5 text-sm"
+            >
+              📥 Download APK TV
+            </a>
+            <button onClick={handleLogout} className="bg-red-500/10 text-red-500 border border-red-500/20 px-4 py-2 rounded-lg cursor-pointer transition-all hover:bg-red-500 hover:text-white text-sm">
+              Keluar
+            </button>
+          </div>
         </div>
 
         {activeTab === 'settings' && (
