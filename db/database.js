@@ -87,6 +87,14 @@ function initTables() {
   `);
 
   db.run(`
+    CREATE TABLE IF NOT EXISTS admin_sessions (
+      token TEXT PRIMARY KEY,
+      expires_at INTEGER NOT NULL,
+      created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+    )
+  `);
+
+  db.run(`
     CREATE TABLE IF NOT EXISTS friday_info (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       date TEXT NOT NULL,
@@ -279,6 +287,37 @@ function getActiveWallpapers() {
   `);
 }
 
+// === Admin sessions (persisted in DB so they survive server restarts) ===
+
+function createAdminSession(token, ttlMs) {
+  const expiresAt = Date.now() + ttlMs;
+  runSql(
+    'INSERT INTO admin_sessions (token, expires_at) VALUES (?, ?) ON CONFLICT(token) DO UPDATE SET expires_at = ?',
+    [token, expiresAt, expiresAt]
+  );
+  return expiresAt;
+}
+
+function findValidAdminSession(token) {
+  if (!token) return null;
+  const row = queryOne('SELECT token, expires_at FROM admin_sessions WHERE token = ?', [token]);
+  if (!row) return null;
+  if (row.expires_at <= Date.now()) {
+    runSql('DELETE FROM admin_sessions WHERE token = ?', [token]);
+    return null;
+  }
+  return row;
+}
+
+function deleteAdminSession(token) {
+  if (!token) return;
+  runSql('DELETE FROM admin_sessions WHERE token = ?', [token]);
+}
+
+function deleteExpiredAdminSessions() {
+  runSql('DELETE FROM admin_sessions WHERE expires_at <= ?', [Date.now()]);
+}
+
 module.exports = {
   initDb,
   getDb,
@@ -293,5 +332,9 @@ module.exports = {
   getRandomQuote,
   getActiveAnnouncements,
   getCurrentFriday,
-  getActiveWallpapers
+  getActiveWallpapers,
+  createAdminSession,
+  findValidAdminSession,
+  deleteAdminSession,
+  deleteExpiredAdminSessions
 };

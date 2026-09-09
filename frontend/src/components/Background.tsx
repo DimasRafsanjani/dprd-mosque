@@ -40,12 +40,27 @@ export const Background: React.FC<BackgroundProps> = ({ meccaUrl, onModeChange, 
       fetchWallpapers();
       fetchQuote();
     };
+    // Refetch saat app kembali ke foreground (ditekan Home lalu dibuka lagi di TV)
+    const handleForeground = () => {
+      setIsOnline(navigator.onLine);
+      fetchWallpapers();
+      fetchQuote();
+    };
+    const handleVisibility = () => {
+      if (document.visibilityState === 'visible') handleForeground();
+    };
     const handleOffline = () => setIsOnline(false);
     window.addEventListener('online', handleOnline);
     window.addEventListener('offline', handleOffline);
+    document.addEventListener('visibilitychange', handleVisibility);
+    window.addEventListener('focus', handleForeground);
+    window.addEventListener('pageshow', handleForeground);
     return () => {
       window.removeEventListener('online', handleOnline);
       window.removeEventListener('offline', handleOffline);
+      document.removeEventListener('visibilitychange', handleVisibility);
+      window.removeEventListener('focus', handleForeground);
+      window.removeEventListener('pageshow', handleForeground);
     };
   }, []);
 
@@ -136,7 +151,7 @@ export const Background: React.FC<BackgroundProps> = ({ meccaUrl, onModeChange, 
   if (streamUrl && !streamUrl.includes('vq=')) streamUrl += '&vq=hd1080';
 
   return (
-    <div id="background-layer" className="fixed inset-0 -z-10 bg-black">
+    <div id="background-layer" className="absolute inset-0 z-0 bg-black">
 
       {/* Base Wallpaper */}
       <div
@@ -170,18 +185,19 @@ export const Background: React.FC<BackgroundProps> = ({ meccaUrl, onModeChange, 
         </div>
       </div>
 
-      {/* Mecca Stream */}
-      <div id="bg-mecca" className={`absolute inset-0 transition-opacity duration-1000 ease-in-out overflow-hidden ${currentMode === 'mecca' ? 'opacity-100 z-10' : 'opacity-0 z-0'}`}>
-        {streamUrl && (
+      {/* Mecca Stream - only mounted when active to avoid white flash + GPU load on TV */}
+      <div id="bg-mecca" className={`absolute inset-0 transition-opacity duration-1000 ease-in-out overflow-hidden bg-black ${currentMode === 'mecca' ? 'opacity-100 z-10' : 'opacity-0 z-0 pointer-events-none'}`}>
+        {currentMode === 'mecca' && streamUrl ? (
           <iframe
             id="mecca-iframe"
+            key={streamUrl}
             src={streamUrl}
             frameBorder="0"
             allow="autoplay; encrypted-media"
             allowFullScreen
-            className="w-full h-full pointer-events-none scale-125"
+            className="w-full h-full pointer-events-none"
           ></iframe>
-        )}
+        ) : null}
       </div>
 
     </div>

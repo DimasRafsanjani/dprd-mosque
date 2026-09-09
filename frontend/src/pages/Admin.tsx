@@ -65,6 +65,18 @@ const Admin: React.FC = () => {
     }
   }, [token]);
 
+  // Langsung lempar ke login saat backend menolak token (sesi habis),
+  // dengan pesan yang jelas — tidak menunggu user menekan Simpan.
+  useEffect(() => {
+    const onUnauthorized = () => {
+      localStorage.removeItem('token');
+      setToken(null);
+      setLoginError('Sesi berakhir, silakan login lagi.');
+    };
+    window.addEventListener('admin-unauthorized', onUnauthorized);
+    return () => window.removeEventListener('admin-unauthorized', onUnauthorized);
+  }, []);
+
   const showToast = (message: string) => {
     setToast(message);
     setTimeout(() => setToast(''), 3000);
@@ -140,20 +152,20 @@ const Admin: React.FC = () => {
         headers: { 'x-admin-token': token }
       });
       setNewAnnText('');
-      showToast('Pengumuman ditambahkan!');
+      showToast('Running text ditambahkan!');
       fetchAnnouncements();
     } catch (err) {
-      alert('Gagal menambah pengumuman');
+      alert('Gagal menambah running text');
     }
   };
 
   const handleDeleteAnnouncement = async (id: number) => {
-    if (!confirm('Hapus pengumuman ini?')) return;
+    if (!confirm('Hapus running text ini?')) return;
     try {
       await axios.delete(`/api/admin/announcements/${id}`, {
         headers: { 'x-admin-token': token }
       });
-      showToast('Pengumuman dihapus!');
+      showToast('Running text dihapus!');
       fetchAnnouncements();
     } catch (err) {
       alert('Gagal menghapus');
@@ -358,7 +370,7 @@ const Admin: React.FC = () => {
             className={`px-4 py-3 rounded-lg cursor-pointer transition-colors ${activeTab === 'announcements' ? 'bg-dprd-green/10 text-dprd-green font-medium' : 'text-slate-600 hover:bg-slate-100'}`}
             onClick={() => setActiveTab('announcements')}
           >
-            Pengumuman
+            Running Text
           </li>
           <li
             className={`px-4 py-3 rounded-lg cursor-pointer transition-colors ${activeTab === 'quotes' ? 'bg-dprd-green/10 text-dprd-green font-medium' : 'text-slate-600 hover:bg-slate-100'}`}
@@ -390,7 +402,7 @@ const Admin: React.FC = () => {
       {/* Main Content */}
       <div className="w-full md:ml-[260px] p-4 md:p-10 md:w-[calc(100%-260px)] overflow-y-auto">
         <div className="flex justify-between items-center mb-6 md:mb-10">
-          <h2 className="text-2xl md:text-3xl font-semibold capitalize">{activeTab === 'settings' ? 'Pengaturan Umum' : activeTab}</h2>
+          <h2 className="text-2xl md:text-3xl font-semibold capitalize">{activeTab === 'settings' ? 'Pengaturan Umum' : activeTab === 'announcements' ? 'Running Text' : activeTab === 'quotes' ? 'Quotes' : activeTab === 'wallpapers' ? 'Foto Background' : activeTab === 'friday' ? 'Data Jumat' : activeTab === 'testing' ? 'Pengujian' : activeTab}</h2>
           <div className="flex items-center gap-3">
             <a 
               href="/downloads/mosque-tv.apk" 
@@ -540,9 +552,10 @@ const Admin: React.FC = () => {
                   <label className="block mb-2 text-slate-500 text-sm">Pilih Layar yang Ingin Ditampilkan</label>
                   <select name="force_screen_mode" value={settings.force_screen_mode || 'auto'} onChange={handleSettingChange} className="w-full bg-white border border-slate-200 text-slate-900 px-4 py-2.5 rounded-lg focus:outline-none focus:border-dprd-green transition-colors">
                     <option value="auto">Normal (Otomatis ikuti waktu)</option>
-                    <option value="countdown">Menuju Adzan (Hitung Mundur)</option>
-                    <option value="adhan">Layar Berkumandang Adzan</option>
-                    <option value="iqamah">Layar Iqamah (Hitung Mundur)</option>
+                    <option value="countdown">Menjelang Adzan (Hitung Mundur)</option>
+                    <option value="adhan">Layar Berkumandang Adzan (1 menit)</option>
+                    <option value="iqamah">Menjelang Iqomah (Hitung Mundur)</option>
+                    <option value="iqamah-moment">Layar Iqomah</option>
                   </select>
                   <p className="text-xs text-slate-500 mt-2">Guna melihat atau mengedit desain layar peringatan tanpa perlu mengubah jam simulasi.</p>
                 </div>
@@ -556,10 +569,10 @@ const Admin: React.FC = () => {
         {activeTab === 'announcements' && (
           <div>
             <div className="bg-white shadow-sm backdrop-blur-xl border border-slate-200 rounded-2xl p-6">
-              <h3 className="mb-4 text-slate-800 border-b border-slate-200 pb-3 font-medium">Tambah Pengumuman</h3>
+              <h3 className="mb-4 text-slate-800 border-b border-slate-200 pb-3 font-medium">Tambah Running Text</h3>
               <form onSubmit={handleAddAnnouncement} className="flex flex-col md:flex-row gap-4 md:items-end">
                 <div className="flex-1">
-                  <label className="block mb-2 text-slate-500 text-sm">Teks Pengumuman (Running Text)</label>
+                  <label className="block mb-2 text-slate-500 text-sm">Teks Running Text (tampil di TV bawah)</label>
                   <input type="text" value={newAnnText} onChange={e => setNewAnnText(e.target.value)} className="w-full bg-white border border-slate-200 text-slate-900 px-4 py-2.5 rounded-lg focus:outline-none focus:border-dprd-green transition-colors" required />
                 </div>
                 <button type="submit" className="bg-dprd-green text-white font-semibold py-2.5 px-6 rounded-lg hover:bg-emerald-600 transition-colors shadow-lg">Tambah</button>
@@ -567,7 +580,7 @@ const Admin: React.FC = () => {
             </div>
 
             <div className="bg-white shadow-sm backdrop-blur-xl border border-slate-200 rounded-2xl p-6 mt-6">
-              <h3 className="mb-4 text-slate-800 border-b border-slate-200 pb-3 font-medium">Daftar Pengumuman Aktif</h3>
+              <h3 className="mb-4 text-slate-800 border-b border-slate-200 pb-3 font-medium">Daftar Running Text Aktif</h3>
               <div className="overflow-x-auto">
               <table className="w-full border-collapse mt-5 min-w-[500px]">
                 <thead>
@@ -587,7 +600,7 @@ const Admin: React.FC = () => {
                   ))}
                   {announcements.length === 0 && (
                     <tr>
-                      <td colSpan={2} className="p-4 text-center text-slate-500">Belum ada pengumuman</td>
+                      <td colSpan={2} className="p-4 text-center text-slate-500">Belum ada running text</td>
                     </tr>
                   )}
                 </tbody>

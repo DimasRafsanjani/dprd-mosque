@@ -19,11 +19,21 @@ export const FridayPanel: React.FC = () => {
     }, 5 * 60 * 1000); // Check every 5 minutes when online
 
     const handleOnline = () => fetchFridayData();
+    // Refetch saat app kembali ke foreground (ditekan Home lalu dibuka lagi di TV)
+    const handleVisibility = () => {
+      if (document.visibilityState === 'visible') fetchFridayData();
+    };
     window.addEventListener('online', handleOnline);
+    document.addEventListener('visibilitychange', handleVisibility);
+    window.addEventListener('focus', handleOnline);
+    window.addEventListener('pageshow', handleOnline);
 
     return () => {
       clearInterval(interval);
       window.removeEventListener('online', handleOnline);
+      document.removeEventListener('visibilitychange', handleVisibility);
+      window.removeEventListener('focus', handleOnline);
+      window.removeEventListener('pageshow', handleOnline);
     };
   }, []);
 
@@ -49,7 +59,7 @@ export const FridayPanel: React.FC = () => {
   };
 
   return (
-    <div className="flex flex-col gap-3 bg-[#097969]/80 backdrop-blur-[30px] p-[24px] rounded-[20px] shadow-lg text-white w-[500px]">
+    <div className="flex flex-col gap-3 bg-[#097969] p-[24px] rounded-[20px] shadow-lg text-white w-[500px]">
       <div className="flex flex-col gap-2">
         <div className="flex flex-col">
           <span className="font-outfit font-semibold text-[24px] opacity-90">Khatib</span>

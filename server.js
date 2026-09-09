@@ -10,6 +10,17 @@ const PORT = process.env.PORT || 3030;
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+// CORS ringan (tanpa dep tambahan) agar dev cross-origin (vite :5173 -> :3030)
+// dan akses absolute-URL tetap bisa, termasuk header x-admin-token + preflight.
+app.use((req, res, next) => {
+  res.header('Access-Control-Allow-Origin', req.headers.origin || '*');
+  res.header('Vary', 'Origin');
+  res.header('Access-Control-Allow-Methods', 'GET,POST,PUT,DELETE,OPTIONS');
+  res.header('Access-Control-Allow-Headers', 'Content-Type, x-admin-token, Authorization');
+  if (req.method === 'OPTIONS') return res.sendStatus(204);
+  next();
+});
+
 // Serve static files from React Frontend build
 app.use(express.static(path.join(__dirname, 'frontend/dist')));
 
@@ -31,6 +42,10 @@ async function start() {
   try {
     await initDb();
     console.log('✅ Database initialized');
+
+    try {
+      require('./middleware/auth').deleteExpiredAdminSessions();
+    } catch (_) {}
 
     app.listen(PORT, '0.0.0.0', () => {
       console.log(`🕌 Mosque Display Server running at:`);

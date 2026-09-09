@@ -27,11 +27,21 @@ export const RunningText: React.FC<{ speed?: number }> = ({ speed = 10 }) => {
     }, 5 * 60 * 1000); // 5 min
 
     const handleOnline = () => fetchAnnouncements();
+    // Refetch saat app kembali ke foreground (ditekan Home lalu dibuka lagi di TV)
+    const handleVisibility = () => {
+      if (document.visibilityState === 'visible') fetchAnnouncements();
+    };
     window.addEventListener('online', handleOnline);
+    document.addEventListener('visibilitychange', handleVisibility);
+    window.addEventListener('focus', handleOnline);
+    window.addEventListener('pageshow', handleOnline);
 
     return () => {
       clearInterval(interval);
       window.removeEventListener('online', handleOnline);
+      document.removeEventListener('visibilitychange', handleVisibility);
+      window.removeEventListener('focus', handleOnline);
+      window.removeEventListener('pageshow', handleOnline);
     };
   }, []);
 
@@ -39,7 +49,8 @@ export const RunningText: React.FC<{ speed?: number }> = ({ speed = 10 }) => {
     try {
       if (typeof navigator !== 'undefined' && !navigator.onLine) return;
       const res = await axios.get('/api/announcements');
-      if (res.data && Array.isArray(res.data) && res.data.length > 0) {
+      if (res.data && Array.isArray(res.data)) {
+        // Sync persis dengan admin, termasuk saat dikosongkan (fallback tampil otomatis via joinedText)
         setAnnouncements(res.data);
       }
     } catch (e) {

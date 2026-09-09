@@ -78,11 +78,21 @@ const Display: React.FC = () => {
     const interval = setInterval(fetchSettings, 5 * 60 * 1000); // Check every 5 minutes when online
 
     const handleOnline = () => fetchSettings();
+    // Refetch saat app kembali ke foreground (ditekan Home lalu dibuka lagi di TV)
+    const handleVisibility = () => {
+      if (document.visibilityState === 'visible') fetchSettings();
+    };
     window.addEventListener('online', handleOnline);
+    document.addEventListener('visibilitychange', handleVisibility);
+    window.addEventListener('focus', handleOnline);
+    window.addEventListener('pageshow', handleOnline);
 
     return () => {
       clearInterval(interval);
       window.removeEventListener('online', handleOnline);
+      document.removeEventListener('visibilitychange', handleVisibility);
+      window.removeEventListener('focus', handleOnline);
+      window.removeEventListener('pageshow', handleOnline);
     };
   }, []);
 
@@ -120,6 +130,8 @@ const Display: React.FC = () => {
             currentState = { state: 'adhan', prayer: testPrayer, countdown: mockCountdown };
           } else if (settings.force_screen_mode === 'iqamah') {
             currentState = { state: 'iqamah-countdown', prayer: testPrayer, countdown: mockCountdown };
+          } else if (settings.force_screen_mode === 'iqamah-moment') {
+            currentState = { state: 'iqamah', prayer: testPrayer, countdown: mockCountdown };
           }
         }
 
@@ -170,29 +182,29 @@ const Display: React.FC = () => {
         <div id="app-container" className={`absolute text inset-0 flex z-10 transition-opacity duration-1000 ${isAdhanOrIqamah ? 'opacity-0' : 'opacity-100'}`}>
 
           {/* Left Sidebar */}
-          <aside className="w-[530px] h-full flex flex-col justify-between bg-[#097969]/80 backdrop-blur-[30px] p-6 shadow-2xl relative z-20">
+          <aside className="w-[470px] h-full flex flex-col justify-between bg-[#097969] pl-4 pr-6 py-6 shadow-2xl relative z-20">
 
             <div className="flex flex-col mt-12 gap-2">
-              <h1 className="font-outfit font-bold text-[45px] leading-tight uppercase">{settings?.mosque_name || 'MASJID ASY SYURA'}</h1>
+              <h1 className="font-outfit font-bold text-[40px] leading-tight uppercase">{settings?.mosque_name || 'MASJID ASY SYURA'}</h1>
               <h2 className="font-outfit font-semibold text-3xl leading-tight">DPRD Provinsi Jawa Barat</h2>
               <p className="font-outfit font-normal text-[27px] opacity-90">Jl. Diponegoro No. 27 Bandung</p>
             </div>
 
             <div className="flex flex-col gap-4 mb-auto mt-30">
-              <div className="font-inter font-black text-[102px] leading-none tabular-nums flex items-baseline whitespace-nowrap will-change-contents">
+              <div className="font-inter font-bold text-[102px] leading-none tabular-nums flex items-baseline whitespace-nowrap">
                 <span>{time.hm}</span>
-                <span className="text-[48px] text-white/80 ml-2.5 inline-block w-[85px] text-left">:{time.s}</span>
+                <span className="text-[48px] text-white ml-2.5 inline-block w-[120px] text-left tabular-nums">:{time.s}</span>
               </div>
               <div className="font-outfit font-normal text-3xl">{dateGregorian || 'Memuat Tanggal...'}</div>
               <div className="font-outfit font-normal text-3xl">{dateHijri}</div>
             </div>
 
-            <div className="flex flex-col gap-2 bg-white/20 backdrop-blur-md rounded-[20px] p-[24px] mb-[120px]">
+            <div className="flex flex-col gap-2 bg-[#0b6e5a] rounded-[20px] p-[24px] mb-[120px]">
               <div className="font-outfit font-semibold text-[32px]">Menuju {prayerState?.prayer?.name}</div>
               <div className="font-inter font-bold text-[108px] leading-none tracking-tighter tabular-nums text-white">
                 {activeTimeStr}
               </div>
-              <div className="font-inter font-normal text-2xl tabular-nums will-change-contents">
+              <div className="font-inter font-normal text-2xl tabular-nums">
                 dalam {prayerState?.countdown ? formatCountdownText(prayerState.countdown) : '--'}
               </div>
             </div>
@@ -204,13 +216,13 @@ const Display: React.FC = () => {
             <div className="flex justify-end items-start gap-8">
               <div className="flex flex-col items-end gap-6">
                 {/* Logos */}
-                <div className="flex bg-[#097969]/80 backdrop-blur-[30px] rounded-[20px] px-8 py-4 h-[97px] items-center gap-6 shadow-xl">
+                <div className="flex bg-[#097969] rounded-[20px] px-8 py-4 h-[97px] items-center gap-6 shadow-xl">
                   <img src="/assets/logos/logo-setwan.png" className="h-[60px] object-contain" />
                   <img src="/assets/logos/logo-dprd.png" className="h-[60px] object-contain" />
                 </div>
 
                 {/* Live Mekkah Tag (Moved below the logo) */}
-                <div className={`flex items-center gap-2 bg-[#FF2828]/50 backdrop-blur-md px-6 py-3 rounded-full transition-opacity duration-1000 ${slideshowMode === 'mecca' ? 'opacity-100' : 'opacity-0'}`}>
+                <div className={`flex items-center gap-2 bg-[#FF2828] px-6 py-3 rounded-full transition-opacity duration-1000 ${slideshowMode === 'mecca' ? 'opacity-100' : 'opacity-0'}`}>
                   <div className="w-3 h-3 bg-white rounded-full animate-pulse"></div>
                   <span className="font-outfit font-bold text-white text-3xl">LIVE MEKKAH</span>
                 </div>
@@ -241,9 +253,9 @@ const Display: React.FC = () => {
                     if (pt) timeStr = formatTime(pt, settings?.timezone);
                   }
                   return (
-                    <div key={key} className="flex-1 flex flex-col bg-[#097969]/80 backdrop-blur-[30px] rounded-[20px] p-[16px] shadow-lg">
+                    <div key={key} className="flex-1 flex flex-col bg-[#097969] rounded-[20px] p-[16px] shadow-lg">
                       <div className="font-outfit font-semibold text-[32px]">{PRAYER_NAMES[key]}</div>
-                      <div className="font-inter font-semibold text-[64px]">{timeStr}</div>
+                      <div className="font-inter font-bold text-[64px]">{timeStr}</div>
                     </div>
                   );
                 })}

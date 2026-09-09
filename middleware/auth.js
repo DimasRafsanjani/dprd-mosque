@@ -1,8 +1,14 @@
 const bcrypt = require('bcryptjs');
-const { getSetting } = require('../db/database');
+const {
+  getSetting,
+  createAdminSession,
+  findValidAdminSession,
+  deleteExpiredAdminSessions
+} = require('../db/database');
 
-// Simple session store (in-memory)
-const sessions = new Map();
+// Session TTL: 24 hours, persisted in DB so logins survive server restarts.
+// (Previously in-memory Map — every restart wiped all sessions.)
+const SESSION_TTL_MS = 24 * 60 * 60 * 1000;
 
 function generateToken() {
   return Math.random().toString(36).substring(2) + Date.now().toString(36);
@@ -16,18 +22,16 @@ function verifyPin(pin) {
 
 function createSession() {
   const token = generateToken();
-  sessions.set(token, { createdAt: Date.now() });
-  // Sessions expire after 24 hours
-  setTimeout(() => sessions.delete(token), 24 * 60 * 60 * 1000);
+  createAdminSession(token, SESSION_TTL_MS);
   return token;
 }
 
 function authMiddleware(req, res, next) {
   const token = req.headers['x-admin-token'] || req.query.token;
-  if (!token || !sessions.has(token)) {
-    return res.status(401).json({ error: 'Unauthorized. Please login with PIN.' });
+  if (!token || !findValidAdminSession(token)) {
+    return res.status(401).json({ success: false, error: 'Sesi berakhir. Silakan login lagi.' });
   }
   next();
 }
 
-module.exports = { verifyPin, createSession, authMiddleware };
+module.exports = { verifyPin, createSession, authMiddleware, deleteExpiredAdminSessions };

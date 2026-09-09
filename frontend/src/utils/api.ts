@@ -7,7 +7,10 @@ import {
   DEFAULT_WALLPAPERS
 } from './offlineData';
 
-export const API_BASE_URL = import.meta.env.VITE_API_URL || 'https://mosque.dimassraf.space';
+// Same-origin default ('') agar dev local & prod yang serve frontend dari backend
+// yang sama tidak kena CORS. Untuk APK/Capacitor (tanpa origin web), isi via
+// VITE_API_URL saat build (lihat script build:apk yang pakai --mode apk).
+export const API_BASE_URL = import.meta.env.VITE_API_URL || '';
 
 const api = axios.create({
   baseURL: API_BASE_URL,
@@ -68,6 +71,20 @@ api.interceptors.response.use(
     return response;
   },
   (error) => {
+    // Sesi admin berakhir/dicabut: lempar ke layar login seketika,
+    // jangan tunggu user menekan Simpan. Login screen sendiri dikecualikan
+    // (401 di sana berarti PIN salah, bukan sesi habis).
+    const url401 = error?.config?.url || '';
+    if (
+      error?.response?.status === 401 &&
+      url401.includes('/api/admin') &&
+      !url401.includes('/api/admin/login') &&
+      typeof window !== 'undefined'
+    ) {
+      try { localStorage.removeItem('token'); } catch (_) {}
+      window.dispatchEvent(new CustomEvent('admin-unauthorized'));
+    }
+
     if (error?.isOfflineFastBypass && error?.cachedData) {
       return Promise.resolve({
         data: error.cachedData,
