@@ -174,6 +174,7 @@ const Display: React.FC = () => {
       >
         <Background
           meccaUrl={settings?.mecca_stream_url}
+          meccaEnabled={settings?.mecca_stream_enabled !== '0'}
           onModeChange={setSlideshowMode}
           slideshowMode={settings?.slideshow_mode}
           slideshowManualSlide={settings?.slideshow_manual_slide}

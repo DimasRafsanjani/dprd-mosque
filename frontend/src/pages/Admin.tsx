@@ -31,6 +31,7 @@ const Admin: React.FC = () => {
   const [settings, setSettings] = useState({
     mosque_name: '',
     mecca_stream_url: '',
+    mecca_stream_enabled: '1',
     latitude: '',
     longitude: '',
     hijri_adjustment: '0',
@@ -438,6 +439,16 @@ const Admin: React.FC = () => {
                 <div className="mb-4">
                   <label className="block mb-2 text-slate-500 text-sm">URL Stream Mekkah (YouTube Embed)</label>
                   <input type="text" name="mecca_stream_url" value={settings.mecca_stream_url} onChange={handleSettingChange} className="w-full bg-white border border-slate-200 text-slate-900 px-4 py-2.5 rounded-lg focus:outline-none focus:border-dprd-green transition-colors" />
+                </div>
+                <div className="mb-4 flex items-center gap-3">
+                  <input
+                    type="checkbox"
+                    id="mecca_stream_enabled"
+                    checked={settings.mecca_stream_enabled !== '0'}
+                    onChange={e => setSettings({ ...settings, mecca_stream_enabled: e.target.checked ? '1' : '0' })}
+                    className="w-5 h-5 accent-dprd-green"
+                  />
+                  <label htmlFor="mecca_stream_enabled" className="text-slate-700">Tampilkan Livestream Mekkah</label>
                 </div>
                 <div className="mb-4">
                   <label className="block mb-2 text-slate-500 text-sm">Mode Slideshow</label>
