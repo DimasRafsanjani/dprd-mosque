@@ -21,12 +21,23 @@ export const RunningText: React.FC<{ speed?: number }> = ({ speed = 10 }) => {
 
   useEffect(() => {
     fetchAnnouncements();
-    const interval = setInterval(fetchAnnouncements, 5 * 60 * 1000); // 5 min
-    return () => clearInterval(interval);
+    const interval = setInterval(() => {
+      if (typeof navigator !== 'undefined' && !navigator.onLine) return;
+      fetchAnnouncements();
+    }, 5 * 60 * 1000); // 5 min
+
+    const handleOnline = () => fetchAnnouncements();
+    window.addEventListener('online', handleOnline);
+
+    return () => {
+      clearInterval(interval);
+      window.removeEventListener('online', handleOnline);
+    };
   }, []);
 
   const fetchAnnouncements = async () => {
     try {
+      if (typeof navigator !== 'undefined' && !navigator.onLine) return;
       const res = await axios.get('/api/announcements');
       if (res.data && Array.isArray(res.data) && res.data.length > 0) {
         setAnnouncements(res.data);
@@ -42,26 +53,14 @@ export const RunningText: React.FC<{ speed?: number }> = ({ speed = 10 }) => {
 
   useEffect(() => {
     const updateDuration = () => {
-      // Container width (white area) is roughly window.innerWidth - 310 (warning box)
       const containerWidth = Math.max(800, window.innerWidth - 310);
-      
-      // With paddingLeft: 100%, textRef.scrollWidth equals containerWidth + textWidth
       const measuredDistance = textRef.current?.scrollWidth || (containerWidth + joinedText.length * 22);
       const totalDistance = Math.max(containerWidth + 400, measuredDistance);
-
-      // Slider speed from admin (5 - 30, default 10)
       const speedVal = Math.max(5, Math.min(30, Number(speed) || 10));
-      
-      // Calibrated speed in pixels per second:
-      // speed 5  -> 35 px/sec (tenang & lambat)
-      // speed 10 -> 55 px/sec (kecepatan standar tv publik, sangat nyaman dibaca)
-      // speed 15 -> 75 px/sec (sedang)
-      // speed 20 -> 95 px/sec (agak cepat)
-      // speed 30 -> 135 px/sec (cepat)
       const pxPerSec = 15 + (speedVal * 4);
-      
       const calculatedDuration = Math.max(25, Math.round(totalDistance / pxPerSec));
-      setDuration(calculatedDuration);
+      
+      setDuration(prev => (Math.abs(prev - calculatedDuration) > 1 ? calculatedDuration : prev));
     };
 
     updateDuration();
@@ -90,7 +89,6 @@ export const RunningText: React.FC<{ speed?: number }> = ({ speed = 10 }) => {
         <div className="w-full whitespace-nowrap overflow-hidden flex items-center h-full">
           <div 
             ref={textRef}
-            key={`marquee-${duration}`}
             className="inline-block font-outfit font-semibold text-[36px] text-black pt-1"
             style={{
               paddingLeft: '100%',

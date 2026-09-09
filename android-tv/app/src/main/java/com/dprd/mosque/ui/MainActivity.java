@@ -288,17 +288,45 @@ public class MainActivity extends AppCompatActivity {
                 String monthName = (month >= 1 && month <= 12) ? hijriMonthNames.get(month - 1) : "";
                 return day + " " + monthName + " " + year + " H";
             } catch (Exception e) {
-                return fallbackHijriDate(now);
+                return fallbackHijriDate(now, adjustment);
             }
         } else {
-            return fallbackHijriDate(now);
+            return fallbackHijriDate(now, adjustment);
         }
     }
 
-    private String fallbackHijriDate(Date now) {
+    private String fallbackHijriDate(Date now, int adjustment) {
         Calendar cal = Calendar.getInstance();
         cal.setTime(now);
-        return cal.get(Calendar.DAY_OF_MONTH) + " Safar 1448 H";
+        if (adjustment != 0) {
+            cal.add(Calendar.DAY_OF_YEAR, adjustment);
+        }
+
+        int day = cal.get(Calendar.DAY_OF_MONTH);
+        int month = cal.get(Calendar.MONTH) + 1;
+        int year = cal.get(Calendar.YEAR);
+
+        if (month < 3) {
+            year -= 1;
+            month += 12;
+        }
+
+        int a = year / 100;
+        int b = 2 - a + (a / 4);
+        int jd = (int) (365.25 * (year + 4716)) + (int) (30.6001 * (month + 1)) + day + b - 1524;
+
+        int i = jd - 1948440 + 10632;
+        int n = (i - 1) / 10631;
+        i = i - 10631 * n + 354;
+        int j = ((10985 - i) / 5316) * ((50 * i) / 17719) + (i / 5670) * ((43 * i) / 15238);
+        i = i - ((30 - j) / 15) * ((17719 * j) / 50) - (j / 16) * ((15238 * j) / 43) + 29;
+        int m = (24 * i) / 709;
+        int hDay = i - (709 * m) / 24;
+        int hYear = 30 * n + j - 30;
+
+        int monthIdx = Math.max(0, Math.min(11, m - 1));
+        String monthName = (monthIdx >= 0 && monthIdx < hijriMonthNames.size()) ? hijriMonthNames.get(monthIdx) : "Safar";
+        return hDay + " " + monthName + " " + hYear + " H";
     }
 
     /**

@@ -37,6 +37,8 @@ const Display: React.FC = () => {
   const [timeOffsetMs, setTimeOffsetMs] = useState(0);
   const [scale, setScale] = useState(1);
 
+  const [lastCalculatedDate, setLastCalculatedDate] = useState<string>(() => new Date().toDateString());
+
   useEffect(() => {
     const handleResize = () => {
       const scaleX = window.innerWidth / 1920;
@@ -50,14 +52,13 @@ const Display: React.FC = () => {
 
   useEffect(() => {
     const fetchSettings = () => {
+      if (typeof navigator !== 'undefined' && !navigator.onLine) return;
       axios.get('/api/settings').then(res => {
         setSettings(prev => {
-          // If settings changed, update them
           if (JSON.stringify(prev) !== JSON.stringify(res.data)) {
-            const pt = calculatePrayerTimes(res.data);
+            const pt = calculatePrayerTimes(res.data, new Date());
             setPrayerTimes(pt);
 
-            // Mock time logic
             if (res.data.use_mock_time === '1' && res.data.mock_time) {
               const [h, m] = res.data.mock_time.split(':').map(Number);
               const target = new Date();
@@ -74,32 +75,37 @@ const Display: React.FC = () => {
     };
 
     fetchSettings();
-    const interval = setInterval(fetchSettings, 10000); // Poll every 10 seconds
+    const interval = setInterval(fetchSettings, 5 * 60 * 1000); // Check every 5 minutes when online
 
-    const now = new Date();
-    const optionsG: Intl.DateTimeFormatOptions = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
-    setDateGregorian(now.toLocaleDateString('id-ID', optionsG));
+    const handleOnline = () => fetchSettings();
+    window.addEventListener('online', handleOnline);
 
-    // Instant Hijri calculation
-    const calcHijri = (adjStr?: string) => {
-      const adjustment = parseInt(adjStr || settings?.hijri_adjustment || '0');
-      setDateHijri(formatHijriDate(now, adjustment));
+    return () => {
+      clearInterval(interval);
+      window.removeEventListener('online', handleOnline);
     };
-    calcHijri();
-
-    axios.get('/api/settings').then(res => {
-      calcHijri(res.data?.hijri_adjustment);
-    }).catch(() => {});
-
-    return () => clearInterval(interval);
   }, []);
 
   useEffect(() => {
+    const optionsG: Intl.DateTimeFormatOptions = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+
     const timer = setInterval(() => {
       const now = new Date(Date.now() + timeOffsetMs);
       const hmStr = now.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' }).replace('.', ':');
       const sStr = now.getSeconds().toString().padStart(2, '0');
       setTime({ hm: hmStr, s: sStr });
+
+      // Dynamic date updates
+      setDateGregorian(now.toLocaleDateString('id-ID', optionsG));
+      const adjustment = parseInt(settings?.hijri_adjustment || '0');
+      setDateHijri(formatHijriDate(now, adjustment));
+
+      // Reliable date-change detection across midnight
+      const currentDateStr = now.toDateString();
+      if (currentDateStr !== lastCalculatedDate && settings) {
+        setLastCalculatedDate(currentDateStr);
+        setPrayerTimes(calculatePrayerTimes(settings, now));
+      }
 
       if (prayerTimes && settings) {
         // Run state machine every second
@@ -118,15 +124,10 @@ const Display: React.FC = () => {
         }
 
         setPrayerState(currentState);
-
-        // Recalculate at midnight
-        if (now.getHours() === 0 && now.getMinutes() === 0 && now.getSeconds() === 0) {
-          setPrayerTimes(calculatePrayerTimes(settings));
-        }
       }
     }, 1000);
     return () => clearInterval(timer);
-  }, [prayerTimes, settings, timeOffsetMs]);
+  }, [prayerTimes, settings, timeOffsetMs, lastCalculatedDate]);
 
   const activeState: PrayerState = prayerState?.state || 'normal';
   const isAdhanOrIqamah = activeState === 'adhan' || activeState === 'iqamah';

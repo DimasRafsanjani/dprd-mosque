@@ -13,11 +13,22 @@ export const FridayPanel: React.FC = () => {
 
   useEffect(() => {
     fetchFridayData();
-    const interval = setInterval(fetchFridayData, 10 * 1000); // Check every 10 seconds
-    return () => clearInterval(interval);
+    const interval = setInterval(() => {
+      if (typeof navigator !== 'undefined' && !navigator.onLine) return;
+      fetchFridayData();
+    }, 5 * 60 * 1000); // Check every 5 minutes when online
+
+    const handleOnline = () => fetchFridayData();
+    window.addEventListener('online', handleOnline);
+
+    return () => {
+      clearInterval(interval);
+      window.removeEventListener('online', handleOnline);
+    };
   }, []);
 
   const fetchFridayData = async () => {
+    if (typeof navigator !== 'undefined' && !navigator.onLine) return;
     try {
       const res = await axios.get('/api/friday');
       setFridayData(res.data);

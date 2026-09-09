@@ -73,6 +73,34 @@ const HIJRI_MONTHS = [
   'Ramadhan', 'Syawwal', "Dzulqa'dah", 'Dzulhijjah'
 ];
 
+export function getTabularHijriDate(date: Date) {
+  const d = new Date(date);
+  let day = d.getDate();
+  let month = d.getMonth() + 1;
+  let year = d.getFullYear();
+
+  if (month < 3) {
+    year -= 1;
+    month += 12;
+  }
+
+  const a = Math.floor(year / 100);
+  const b = 2 - a + Math.floor(a / 4);
+  const jd = Math.floor(365.25 * (year + 4716)) + Math.floor(30.6001 * (month + 1)) + day + b - 1524.5;
+
+  let i = Math.floor(jd) - 1948440 + 10632;
+  let n = Math.floor((i - 1) / 10631);
+  i = i - 10631 * n + 354;
+  let j = (Math.floor((10985 - i) / 5316)) * (Math.floor((50 * i) / 17719)) + (Math.floor(i / 5670)) * (Math.floor((43 * i) / 15238));
+  i = i - (Math.floor((30 - j) / 15)) * (Math.floor((17719 * j) / 50)) - (Math.floor(j / 16)) * (Math.floor((15238 * j) / 43)) + 29;
+  let m = Math.floor((24 * i) / 709);
+  let d2 = i - Math.floor((709 * m) / 24);
+  let y2 = 30 * n + j - 30;
+
+  const monthIndex = Math.max(0, Math.min(11, m - 1));
+  return { day: d2, monthIndex, year: y2 };
+}
+
 export function formatHijriDate(date: Date = new Date(), adjustment = 0): string {
   const targetDate = new Date(date);
   if (adjustment !== 0) {
@@ -97,11 +125,17 @@ export function formatHijriDate(date: Date = new Date(), adjustment = 0): string
     }
 
     const monthNum = parseInt(month, 10);
-    const monthName = (monthNum >= 1 && monthNum <= 12) ? HIJRI_MONTHS[monthNum - 1] : 'Safar';
-    return `${day} ${monthName} ${year} H`;
+    if (!isNaN(monthNum) && monthNum >= 1 && monthNum <= 12 && day && year) {
+      const monthName = HIJRI_MONTHS[monthNum - 1];
+      return `${day} ${monthName} ${year} H`;
+    }
   } catch (e) {
-    return `${targetDate.getDate()} Safar 1448 H`;
+    // Fallback to tabular calculation if Intl islamic calendar is not supported
   }
+
+  const tab = getTabularHijriDate(targetDate);
+  const monthName = HIJRI_MONTHS[tab.monthIndex] || 'Safar';
+  return `${tab.day} ${monthName} ${tab.year} H`;
 }
 
 export function getCountdown(targetTime: Date, now: Date = new Date()) {

@@ -25,6 +25,33 @@ function getOfflineFallbackData(url?: string): any {
   return null;
 }
 
+api.interceptors.request.use((config) => {
+  if (config.method?.toUpperCase() === 'GET' && typeof navigator !== 'undefined' && !navigator.onLine) {
+    const url = config.url;
+    if (url) {
+      const cached = localStorage.getItem(`cache_${url}`);
+      if (cached) {
+        try {
+          return Promise.reject({
+            config,
+            isOfflineFastBypass: true,
+            cachedData: JSON.parse(cached)
+          });
+        } catch (_) {}
+      }
+      const fallback = getOfflineFallbackData(url);
+      if (fallback) {
+        return Promise.reject({
+          config,
+          isOfflineFastBypass: true,
+          cachedData: fallback
+        });
+      }
+    }
+  }
+  return config;
+});
+
 api.interceptors.response.use(
   (response) => {
     // Cache GET requests yang berhasil
@@ -41,6 +68,17 @@ api.interceptors.response.use(
     return response;
   },
   (error) => {
+    if (error?.isOfflineFastBypass && error?.cachedData) {
+      return Promise.resolve({
+        data: error.cachedData,
+        status: 200,
+        statusText: 'OK (Instant Offline Bypass)',
+        headers: {},
+        config: error.config,
+        isCached: true
+      });
+    }
+
     const url = error.config?.url;
     if (url && error.config?.method?.toUpperCase() === 'GET') {
       // 1. Coba ambil dari localStorage cache

@@ -35,7 +35,11 @@ export const Background: React.FC<BackgroundProps> = ({ meccaUrl, onModeChange, 
     fetchWallpapers();
     fetchQuote();
 
-    const handleOnline = () => setIsOnline(true);
+    const handleOnline = () => {
+      setIsOnline(true);
+      fetchWallpapers();
+      fetchQuote();
+    };
     const handleOffline = () => setIsOnline(false);
     window.addEventListener('online', handleOnline);
     window.addEventListener('offline', handleOffline);
@@ -46,11 +50,11 @@ export const Background: React.FC<BackgroundProps> = ({ meccaUrl, onModeChange, 
   }, []);
 
   useEffect(() => {
-    const newModes = [];
-    newModes.push('wallpaper'); // Base mode always exists
+    const newModes: string[] = ['wallpaper'];
     if (quote?.text_translation || quote?.text_arabic) newModes.push('quote');
     if (meccaUrl && isOnline) newModes.push('mecca');
-    setModes(newModes);
+
+    setModes(prev => (JSON.stringify(prev) !== JSON.stringify(newModes) ? newModes : prev));
   }, [wallpapers, quote, meccaUrl, isOnline]);
 
   useEffect(() => {
@@ -84,6 +88,7 @@ export const Background: React.FC<BackgroundProps> = ({ meccaUrl, onModeChange, 
   }, [modes, wallpapers.length, slideshowMode, slideshowManualSlide]);
 
   const fetchWallpapers = async () => {
+    if (typeof navigator !== 'undefined' && !navigator.onLine) return;
     try {
       const res = await axios.get('/api/wallpapers');
       setWallpapers(res.data);
@@ -93,6 +98,7 @@ export const Background: React.FC<BackgroundProps> = ({ meccaUrl, onModeChange, 
   };
 
   const fetchQuote = async () => {
+    if (typeof navigator !== 'undefined' && !navigator.onLine) return;
     try {
       const res = await axios.get('/api/quote');
       setQuote(res.data);
