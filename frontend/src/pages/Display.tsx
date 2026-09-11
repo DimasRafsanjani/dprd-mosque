@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import axios from '../utils/api';
-import { calculatePrayerTimes, formatTime, formatHijriDate, PRAYER_KEYS, PRAYER_NAMES, getPrayerState, formatCountdownText } from '../utils/prayer';
-import type { PrayerSettings, PrayerState } from '../utils/prayer';
+import { calculatePrayerTimes, getEffectivePrayerTimes, formatTime, formatHijriDate, PRAYER_KEYS, PRAYER_NAMES, getPrayerState, formatCountdownText } from '../utils/prayer';
+import type { PrayerSettings, PrayerState, DaySchedule } from '../utils/prayer';
 import { PrayerTimes } from 'adhan';
 
 import { Background } from '../components/Background';
@@ -39,6 +39,19 @@ const Display: React.FC = () => {
 
   const [lastCalculatedDate, setLastCalculatedDate] = useState<string>(() => new Date().toDateString());
 
+  // Jadwal Kemenag tersinkron (hari ini + besok). Kosong = belum sync → fallback hitungan lokal.
+  const [schedules, setSchedules] = useState<Record<string, DaySchedule>>(() => {
+    try {
+      const cached = localStorage.getItem('cache_/api/schedule');
+      if (cached) return JSON.parse(cached)?.days || {};
+    } catch (_) {}
+    return {};
+  });
+  const schedulesRef = useRef(schedules);
+  schedulesRef.current = schedules;
+  const settingsRef = useRef(settings);
+  settingsRef.current = settings;
+
   useEffect(() => {
     const handleResize = () => {
       const scaleX = window.innerWidth / 1920;
@@ -51,12 +64,23 @@ const Display: React.FC = () => {
   }, []);
 
   useEffect(() => {
+    const fetchSchedule = () => {
+      if (typeof navigator !== 'undefined' && !navigator.onLine) return;
+      axios.get('/api/schedule').then(res => {
+        const days = res.data?.days;
+        if (days && typeof days === 'object') {
+          setSchedules(prev => (JSON.stringify(prev) !== JSON.stringify(days) ? days : prev));
+        }
+      }).catch(err => console.error(err));
+    };
+
     const fetchSettings = () => {
       if (typeof navigator !== 'undefined' && !navigator.onLine) return;
+      fetchSchedule();
       axios.get('/api/settings').then(res => {
         setSettings(prev => {
           if (JSON.stringify(prev) !== JSON.stringify(res.data)) {
-            const pt = calculatePrayerTimes(res.data, new Date());
+            const pt = getEffectivePrayerTimes(res.data, new Date(), schedulesRef.current);
             setPrayerTimes(pt);
 
             if (res.data.use_mock_time === '1' && res.data.mock_time) {
@@ -96,6 +120,13 @@ const Display: React.FC = () => {
     };
   }, []);
 
+  // Hitung ulang saat jadwal Kemenag tersinkron tiba/berubah
+  useEffect(() => {
+    if (settingsRef.current) {
+      setPrayerTimes(getEffectivePrayerTimes(settingsRef.current, new Date(), schedules));
+    }
+  }, [schedules]);
+
   useEffect(() => {
     const optionsG: Intl.DateTimeFormatOptions = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
 
@@ -114,12 +145,20 @@ const Display: React.FC = () => {
       const currentDateStr = now.toDateString();
       if (currentDateStr !== lastCalculatedDate && settings) {
         setLastCalculatedDate(currentDateStr);
-        setPrayerTimes(calculatePrayerTimes(settings, now));
+        if (typeof navigator === 'undefined' || navigator.onLine) {
+          axios.get('/api/schedule').then(res => {
+            const days = res.data?.days;
+            if (days && typeof days === 'object') {
+              setSchedules(prev => (JSON.stringify(prev) !== JSON.stringify(days) ? days : prev));
+            }
+          }).catch(() => {});
+        }
+        setPrayerTimes(getEffectivePrayerTimes(settings, now, schedules));
       }
 
       if (prayerTimes && settings) {
         // Run state machine every second
-        let currentState = getPrayerState(prayerTimes, settings, now);
+        let currentState = getPrayerState(prayerTimes, settings, now, schedules);
 
         if (settings.force_screen_mode && settings.force_screen_mode !== 'auto') {
           const testPrayer = { name: 'Maghrib (Test)', time: new Date(), key: 'maghrib' };
@@ -139,7 +178,7 @@ const Display: React.FC = () => {
       }
     }, 1000);
     return () => clearInterval(timer);
-  }, [prayerTimes, settings, timeOffsetMs, lastCalculatedDate]);
+  }, [prayerTimes, settings, timeOffsetMs, lastCalculatedDate, schedules]);
 
   const activeState: PrayerState = prayerState?.state || 'normal';
   const isAdhanOrIqamah = activeState === 'adhan' || activeState === 'iqamah';

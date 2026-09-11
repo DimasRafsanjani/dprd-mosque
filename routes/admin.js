@@ -4,7 +4,7 @@ const multer = require('multer');
 const path = require('path');
 const fs = require('fs');
 const { verifyPin, createSession, authMiddleware } = require('../middleware/auth');
-const { setSetting, getAllSettings, runSql, queryAll } = require('../db/database');
+const { setSetting, getSetting, getAllSettings, runSql, queryAll, countScheduleDays } = require('../db/database');
 
 // Configure multer for wallpaper uploads
 const storage = multer.diskStorage({
@@ -39,6 +39,36 @@ router.post('/login', (req, res) => {
 
 // Protect all routes below with authMiddleware
 router.use(authMiddleware);
+
+// GET /api/admin/schedule/status — info sync jadwal Kemenag
+router.get('/schedule/status', (req, res) => {
+  try {
+    res.json({
+      success: true,
+      data: {
+        city_id: getSetting('schedule_city_id') || '1219',
+        city_name: getSetting('schedule_city_name') || '',
+        last_sync: getSetting('schedule_last_sync') || null,
+        days_stored: countScheduleDays()
+      }
+    });
+  } catch (err) {
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+// POST /api/admin/schedule/sync — tarik jadwal Kemenag (bulan ini + depan) ke DB
+router.post('/schedule/sync', async (req, res) => {
+  try {
+    const cityId = String((req.body && req.body.city_id) || getSetting('schedule_city_id') || '1219');
+    setSetting('schedule_city_id', cityId);
+    const { syncSchedule } = require('../services/schedule');
+    const result = await syncSchedule(cityId);
+    res.json({ success: true, data: result });
+  } catch (err) {
+    res.status(502).json({ success: false, error: 'Gagal sinkronisasi: ' + err.message });
+  }
+});
 
 // POST /api/admin/settings — Update one or multiple settings
 router.post('/settings', (req, res) => {

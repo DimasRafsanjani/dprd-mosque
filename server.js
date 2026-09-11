@@ -53,6 +53,23 @@ async function start() {
       console.log(`   Network: http://0.0.0.0:${PORT}`);
       console.log(`   Admin:   http://localhost:${PORT}/admin.html`);
     });
+
+    // Best-effort auto-sync jadwal Kemenag (bulan ini + depan) max 1x/7 hari.
+    // Gagal (offline) tidak masalah: TV pakai hitungan lokal sebagai fallback.
+    setImmediate(async () => {
+      try {
+        const { getSetting } = require('./db/database');
+        const last = getSetting('schedule_last_sync');
+        const stale = !last || (Date.now() - new Date(last).getTime() > 7 * 24 * 3600 * 1000);
+        if (!stale) return;
+        const city = getSetting('schedule_city_id') || '1219';
+        const { syncSchedule } = require('./services/schedule');
+        const r = await syncSchedule(city);
+        console.log(`📅 Jadwal Kemenag tersinkron (${r.synced} hari, ${r.lokasi})`);
+      } catch (e) {
+        console.warn('⚠️ Auto-sync jadwal gagal, pakai hitungan lokal:', e.message);
+      }
+    });
   } catch (err) {
     console.error('Failed to start server:', err);
     process.exit(1);

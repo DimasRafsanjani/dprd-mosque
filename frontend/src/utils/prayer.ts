@@ -25,10 +25,16 @@ export interface PrayerSettings {
 }
 
 export function getCalculationParams(settings: PrayerSettings) {
-  const method = settings.calculation_method || 'MuslimWorldLeague';
+  const method = settings.calculation_method || 'Kemenag';
   let params;
 
   switch (method) {
+    // Kemenag RI: Subuh 20°, Isya 18°, Ashar Syafi'i (bayangan 1x)
+    case 'Kemenag':
+      params = CalculationMethod.MuslimWorldLeague();
+      params.fajrAngle = 20;
+      params.ishaAngle = 18;
+      break;
     case 'MuslimWorldLeague': params = CalculationMethod.MuslimWorldLeague(); break;
     case 'Egyptian': params = CalculationMethod.Egyptian(); break;
     case 'Karachi': params = CalculationMethod.Karachi(); break;
@@ -50,12 +56,39 @@ export function getCalculationParams(settings: PrayerSettings) {
   return params;
 }
 
+// Ikhtiyat Kemenag: +2 menit pengaman (tidak berlaku untuk Syuruq/Terbit).
+// Residu = sisa selisih basis (20°/18° + ikhtiyat) vs Kemenag Kota Bandung,
+// diukur di 3 musim (Jun/Sep/Des 2026) — error maks ±1 menit setahun.
+export const ADJUST_KEYS = ['fajr', 'sunrise', 'dhuhr', 'asr', 'maghrib', 'isha'] as const;
+export const IKHTIYAT_KEYS = ['fajr', 'dhuhr', 'asr', 'maghrib', 'isha'] as const;
+export const DEFAULT_ADJUST: Record<string, string> = {
+  adjust_fajr: '0',
+  adjust_sunrise: '-7',
+  adjust_dhuhr: '0',
+  adjust_asr: '0',
+  adjust_maghrib: '5',
+  adjust_isha: '1'
+};
+
 export function calculatePrayerTimes(settings: PrayerSettings, date: Date = new Date()) {
   const lat = parseFloat(settings.latitude || '-6.9175');
   const lng = parseFloat(settings.longitude || '107.6191');
   const coordinates = new Coordinates(lat, lng);
   const params = getCalculationParams(settings);
-  return new PrayerTimes(coordinates, date, params);
+  const pt = new PrayerTimes(coordinates, date, params);
+  const ikhtiyat = parseInt(settings.ikhtiyat ?? '2', 10) || 0;
+  if (ikhtiyat) {
+    for (const key of IKHTIYAT_KEYS) {
+      (pt as any)[key] = new Date((pt as any)[key].getTime() + ikhtiyat * 60 * 1000);
+    }
+  }
+  for (const key of ADJUST_KEYS) {
+    const off = parseInt(settings[`adjust_${key}`] ?? DEFAULT_ADJUST[`adjust_${key}`] ?? '0', 10);
+    if (off) {
+      (pt as any)[key] = new Date((pt as any)[key].getTime() + off * 60 * 1000);
+    }
+  }
+  return pt;
 }
 
 export function formatTime(date: Date, timezone = 'Asia/Jakarta') {
@@ -167,7 +200,55 @@ export function formatCountdownText(countdown: { hours: number; minutes: number;
   return `${countdown.seconds} detik`;
 }
 
-export function getNextPrayer(prayerTimes: PrayerTimes, settings: PrayerSettings, now: Date = new Date()) {
+// Jadwal Kemenag tersinkron (HH:MM WIB per tanggal). Jika ada untuk tanggal
+// yang diminta, dipakai plek (sudah final dari Kemenag); jika tidak ada
+// (belum sync / offline lama) jatuh ke hitungan lokal sebagai fallback.
+export interface DaySchedule {
+  fajr: string;
+  sunrise: string;
+  dhuhr: string;
+  asr: string;
+  maghrib: string;
+  isha: string;
+}
+
+export function toDateKey(date: Date): string {
+  return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
+}
+
+export function timesFromSchedule(row: DaySchedule, date: Date): Record<string, Date> | null {
+  try {
+    const out: Record<string, Date> = {};
+    for (const key of ADJUST_KEYS) {
+      const v = (row as any)[key];
+      if (typeof v !== 'string' || !/^\d{2}:\d{2}$/.test(v)) return null;
+      const [h, m] = v.split(':').map(Number);
+      const d = new Date(date);
+      d.setHours(h, m, 0, 0);
+      out[key] = d;
+    }
+    return out;
+  } catch {
+    return null;
+  }
+}
+
+export function getEffectivePrayerTimes(
+  settings: PrayerSettings,
+  date: Date = new Date(),
+  schedules?: Record<string, DaySchedule>
+): PrayerTimes {
+  const pt = calculatePrayerTimes(settings, date);
+  const over = schedules?.[toDateKey(date)] ? timesFromSchedule(schedules[toDateKey(date)], date) : null;
+  if (over) {
+    for (const key of ADJUST_KEYS) {
+      (pt as any)[key] = over[key];
+    }
+  }
+  return pt;
+}
+
+export function getNextPrayer(prayerTimes: PrayerTimes, settings: PrayerSettings, now: Date = new Date(), schedules?: Record<string, DaySchedule>) {
   const times: Record<string, Date> = {
     fajr: prayerTimes.fajr,
     sunrise: prayerTimes.sunrise,
@@ -186,7 +267,7 @@ export function getNextPrayer(prayerTimes: PrayerTimes, settings: PrayerSettings
   // All prayers passed, next is fajr tomorrow
   const tomorrow = new Date(now);
   tomorrow.setDate(tomorrow.getDate() + 1);
-  const tomorrowTimes = calculatePrayerTimes(settings, tomorrow);
+  const tomorrowTimes = getEffectivePrayerTimes(settings, tomorrow, schedules);
   return { key: 'fajr', name: PRAYER_NAMES.fajr, time: tomorrowTimes.fajr, isTomorrow: true };
 }
 
@@ -217,8 +298,8 @@ export function getIqamahTime(prayerKey: string, prayerTime: Date, settings: Pra
 
 export type PrayerState = 'normal' | 'pre-adhan' | 'adhan' | 'iqamah-countdown' | 'iqamah';
 
-export function getPrayerState(prayerTimes: PrayerTimes, settings: PrayerSettings, now: Date = new Date()) {
-  const nextPrayer = getNextPrayer(prayerTimes, settings, now);
+export function getPrayerState(prayerTimes: PrayerTimes, settings: PrayerSettings, now: Date = new Date(), schedules?: Record<string, DaySchedule>) {
+  const nextPrayer = getNextPrayer(prayerTimes, settings, now, schedules);
   const currentPrayer = getCurrentPrayer(prayerTimes, now);
   const preAlertMinutes = parseInt(settings.adhan_pre_alert_minutes || '5');
 

@@ -6,7 +6,7 @@ This repository contains the **Mosque Prayer Time Display System** for **DPRD Pr
 
 ## 🏛️ Repository Structure
 
-- **`server.js`**: Express.js backend server managing API endpoints (`/api/settings`, `/api/announcements`, `/api/friday`, `/api/quote`, `/api/wallpapers`) using SQLite (`sql.js`).
+- **`server.js`**: Express.js backend server managing API endpoints (`/api/settings`, `/api/announcements`, `/api/friday`, `/api/quote`, `/api/wallpapers`, `/api/schedule`) using SQLite (`sql.js`). `/api/schedule` serves synced Kemenag rows (today + tomorrow); empty = TV falls back to local calculation.
 - **`frontend/`**: React 19 + TypeScript + Vite + Tailwind CSS v4 Web/PWA application.
   - **`frontend/src/pages/Display.tsx`**: Main TV display interface (1920x1080 scaled viewport).
   - **`frontend/src/pages/Admin.tsx`**: Admin panel for controlling settings, announcements, Friday officers, quotes, and wallpapers.

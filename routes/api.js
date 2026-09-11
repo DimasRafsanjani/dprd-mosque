@@ -6,8 +6,13 @@ const {
   getRandomQuote,
   getActiveAnnouncements,
   getCurrentFriday,
-  getActiveWallpapers
+  getActiveWallpapers,
+  getScheduleDay
 } = require('../db/database');
+
+function toDateKey(d) {
+  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+}
 
 // GET /api/settings — display page fetches all settings
 router.get('/settings', (req, res) => {
@@ -46,6 +51,26 @@ router.get('/announcements', (req, res) => {
   try {
     const announcements = getActiveAnnouncements();
     res.json(announcements);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// GET /api/schedule — synced Kemenag rows for today + tomorrow (null = use local calc)
+router.get('/schedule', (req, res) => {
+  try {
+    const now = new Date();
+    const tomorrow = new Date(now);
+    tomorrow.setDate(tomorrow.getDate() + 1);
+    const todayKey = toDateKey(now);
+    const tomorrowKey = toDateKey(tomorrow);
+    res.json({
+      today: todayKey,
+      days: {
+        [todayKey]: getScheduleDay(todayKey),
+        [tomorrowKey]: getScheduleDay(tomorrowKey)
+      }
+    });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }

@@ -7,8 +7,9 @@ export const DEFAULT_SETTINGS: PrayerSettings = {
   latitude: '-6.9175',
   longitude: '107.6191',
   timezone: 'Asia/Jakarta',
-  calculation_method: 'MuslimWorldLeague',
+  calculation_method: 'Kemenag',
   madhab: 'Shafi',
+  ikhtiyat: '2',
   running_text_speed: '10',
   bg_rotation_interval: '30',
   hijri_adjustment: '0',
@@ -18,7 +19,13 @@ export const DEFAULT_SETTINGS: PrayerSettings = {
   iqamah_asr: '10',
   iqamah_maghrib: '10',
   iqamah_isha: '10',
-  slideshow_mode: 'auto'
+  slideshow_mode: 'auto',
+  adjust_fajr: '0',
+  adjust_sunrise: '-7',
+  adjust_dhuhr: '0',
+  adjust_asr: '0',
+  adjust_maghrib: '5',
+  adjust_isha: '1'
 };
 
 export const DEFAULT_ANNOUNCEMENTS = [

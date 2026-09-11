@@ -95,6 +95,20 @@ function initTables() {
   `);
 
   db.run(`
+    CREATE TABLE IF NOT EXISTS prayer_schedule (
+      date TEXT PRIMARY KEY,
+      fajr TEXT NOT NULL,
+      sunrise TEXT NOT NULL,
+      dhuhr TEXT NOT NULL,
+      asr TEXT NOT NULL,
+      maghrib TEXT NOT NULL,
+      isha TEXT NOT NULL,
+      source TEXT DEFAULT 'kemenag',
+      updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
+    )
+  `);
+
+  db.run(`
     CREATE TABLE IF NOT EXISTS friday_info (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       date TEXT NOT NULL,
@@ -125,9 +139,17 @@ function seedDefaults() {
       latitude: '-6.9175',
       longitude: '107.6191',
       timezone: 'Asia/Jakarta',
-      calculation_method: 'MuslimWorldLeague',
+      calculation_method: 'Kemenag',
       madhab: 'Shafi',
       hijri_adjustment: '0',
+      ikhtiyat: '2',
+      schedule_city_id: '1219',
+      adjust_fajr: '0',
+      adjust_sunrise: '-7',
+      adjust_dhuhr: '0',
+      adjust_asr: '0',
+      adjust_maghrib: '5',
+      adjust_isha: '1',
       admin_pin: bcrypt.hashSync('1234', 10),
       iqamah_fajr: '15',
       iqamah_dhuhr: '10',
@@ -146,6 +168,32 @@ function seedDefaults() {
     }
     stmt.free();
   }
+
+  // Default kota jadwal Kemenag (hormati pilihan user bila sudah ada)
+  try {
+    const cStmt = db.prepare("INSERT INTO settings (key, value) VALUES ('schedule_city_id', '1219') ON CONFLICT(key) DO NOTHING");
+    cStmt.run();
+    cStmt.free();
+  } catch (_) {}
+
+  // Migrasi ke basis Kemenag: basis hitung berubah (20°/18° + ikhtiyat),
+  // sehingga angka koreksi lama tidak valid lagi — timpa dengan residu baru.
+  // (Aman: metode & koreksi tidak bisa diubah user via Admin sebelum ini.)
+  const kemenagMigrate = {
+    calculation_method: 'Kemenag',
+    ikhtiyat: '2',
+    adjust_fajr: '0',
+    adjust_sunrise: '-7',
+    adjust_dhuhr: '0',
+    adjust_asr: '0',
+    adjust_maghrib: '5',
+    adjust_isha: '1'
+  };
+  const bStmt = db.prepare('INSERT INTO settings (key, value) VALUES (?, ?) ON CONFLICT(key) DO UPDATE SET value = excluded.value');
+  for (const [key, value] of Object.entries(kemenagMigrate)) {
+    bStmt.run([key, value]);
+  }
+  bStmt.free();
 
   // Seed quotes if empty
   const quoteResult = db.exec('SELECT COUNT(*) as count FROM quotes');
@@ -318,6 +366,32 @@ function deleteExpiredAdminSessions() {
   runSql('DELETE FROM admin_sessions WHERE expires_at <= ?', [Date.now()]);
 }
 
+// === Kemenag prayer schedule (synced, cached for offline-first) ===
+
+function saveScheduleDay(row) {
+  runSql(
+    `INSERT INTO prayer_schedule (date, fajr, sunrise, dhuhr, asr, maghrib, isha, source)
+     VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+     ON CONFLICT(date) DO UPDATE SET
+       fajr = excluded.fajr, sunrise = excluded.sunrise, dhuhr = excluded.dhuhr,
+       asr = excluded.asr, maghrib = excluded.maghrib, isha = excluded.isha,
+       source = excluded.source, updated_at = CURRENT_TIMESTAMP`,
+    [row.date, row.fajr, row.sunrise, row.dhuhr, row.asr, row.maghrib, row.isha, row.source || 'kemenag']
+  );
+}
+
+function getScheduleDay(dateStr) {
+  return queryOne(
+    'SELECT date, fajr, sunrise, dhuhr, asr, maghrib, isha FROM prayer_schedule WHERE date = ?',
+    [dateStr]
+  );
+}
+
+function countScheduleDays() {
+  const r = queryOne('SELECT COUNT(*) AS c FROM prayer_schedule');
+  return r ? r.c : 0;
+}
+
 module.exports = {
   initDb,
   getDb,
@@ -336,5 +410,8 @@ module.exports = {
   createAdminSession,
   findValidAdminSession,
   deleteAdminSession,
-  deleteExpiredAdminSessions
+  deleteExpiredAdminSessions,
+  saveScheduleDay,
+  getScheduleDay,
+  countScheduleDays
 };

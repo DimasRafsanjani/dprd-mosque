@@ -19,6 +19,10 @@ const Admin: React.FC = () => {
   const [activeTab, setActiveTab] = useState<string>('settings');
   const [toast, setToast] = useState('');
 
+  // Kemenag schedule sync status
+  const [schedStatus, setSchedStatus] = useState<any>(null);
+  const [syncing, setSyncing] = useState(false);
+
   // Wallpapers State
   const [wallpapers, setWallpapers] = useState<any[]>([]);
   const [uploadFile, setUploadFile] = useState<File | null>(null);
@@ -40,13 +44,21 @@ const Admin: React.FC = () => {
     iqamah_asr: '10',
     iqamah_maghrib: '10',
     iqamah_isha: '10',
+    ikhtiyat: '2',
+    adjust_fajr: '0',
+    adjust_sunrise: '-7',
+    adjust_dhuhr: '0',
+    adjust_asr: '0',
+    adjust_maghrib: '5',
+    adjust_isha: '1',
     slideshow_mode: 'auto',
     slideshow_manual_slide: 'wallpaper',
     use_mock_time: '0',
     mock_time: '12:00',
     use_mock_friday: '0',
     force_screen_mode: 'auto',
-    running_text_speed: '10'
+    running_text_speed: '10',
+    schedule_city_id: '1219'
   });
 
   // Announcements State
@@ -63,8 +75,37 @@ const Admin: React.FC = () => {
       fetchQuotes();
       fetchWallpapers();
       fetchFridayRecords();
+      fetchScheduleStatus();
     }
   }, [token]);
+
+  const fetchScheduleStatus = async () => {
+    try {
+      const res = await axios.get('/api/admin/schedule/status', {
+        headers: { 'x-admin-token': token }
+      });
+      if (res.data.success) setSchedStatus(res.data.data);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  const handleSyncSchedule = async () => {
+    setSyncing(true);
+    try {
+      const res = await axios.post('/api/admin/schedule/sync', { city_id: settings.schedule_city_id || '1219' }, {
+        headers: { 'x-admin-token': token }
+      });
+      if (res.data.success) {
+        showToast(`Jadwal tersinkron (${res.data.data.synced} hari, ${res.data.data.lokasi})!`);
+        fetchScheduleStatus();
+      }
+    } catch (err: any) {
+      alert('Gagal sinkronisasi: ' + (err.response?.data?.error || err.message));
+    } finally {
+      setSyncing(false);
+    }
+  };
 
   // Langsung lempar ke login saat backend menolak token (sesi habis),
   // dengan pesan yang jelas — tidak menunggu user menekan Simpan.
@@ -511,6 +552,59 @@ const Admin: React.FC = () => {
                   <label className="block mb-2 text-slate-500 text-sm">Isya</label>
                   <input type="number" name="iqamah_isha" value={settings.iqamah_isha || ''} onChange={handleSettingChange} className="w-full bg-white border border-slate-200 text-slate-900 px-4 py-2.5 rounded-lg focus:outline-none focus:border-dprd-green transition-colors" />
                 </div>
+              </div>
+
+              <div className="bg-white shadow-sm backdrop-blur-xl border border-slate-200 rounded-2xl p-6">
+                <h3 className="mb-4 text-slate-800 border-b border-slate-200 pb-3 font-medium">Koreksi Jadwal (Menit)</h3>
+                <p className="text-xs text-slate-500 mb-4">Basis: Kemenag (Subuh 20°, Isya 18°, Ashar Syafi'i) + ikhtiyat. Angka di bawah = sisa koreksi, terukur pas di 3 musim. Negatif = majukan, positif = mundurkan.</p>
+                <div className="mb-4">
+                  <label className="block mb-2 text-slate-500 text-sm">Ikhtiyat (pengaman, tidak untuk Syuruq)</label>
+                  <input type="number" name="ikhtiyat" value={settings.ikhtiyat ?? ''} onChange={handleSettingChange} className="w-full bg-white border border-slate-200 text-slate-900 px-4 py-2.5 rounded-lg focus:outline-none focus:border-dprd-green transition-colors" />
+                </div>
+                <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+                  <div>
+                    <label className="block mb-2 text-slate-500 text-sm">Subuh</label>
+                    <input type="number" name="adjust_fajr" value={settings.adjust_fajr ?? ''} onChange={handleSettingChange} className="w-full bg-white border border-slate-200 text-slate-900 px-4 py-2.5 rounded-lg focus:outline-none focus:border-dprd-green transition-colors" />
+                  </div>
+                  <div>
+                    <label className="block mb-2 text-slate-500 text-sm">Syuruq</label>
+                    <input type="number" name="adjust_sunrise" value={settings.adjust_sunrise ?? ''} onChange={handleSettingChange} className="w-full bg-white border border-slate-200 text-slate-900 px-4 py-2.5 rounded-lg focus:outline-none focus:border-dprd-green transition-colors" />
+                  </div>
+                  <div>
+                    <label className="block mb-2 text-slate-500 text-sm">Dzuhur</label>
+                    <input type="number" name="adjust_dhuhr" value={settings.adjust_dhuhr ?? ''} onChange={handleSettingChange} className="w-full bg-white border border-slate-200 text-slate-900 px-4 py-2.5 rounded-lg focus:outline-none focus:border-dprd-green transition-colors" />
+                  </div>
+                  <div>
+                    <label className="block mb-2 text-slate-500 text-sm">Ashar</label>
+                    <input type="number" name="adjust_asr" value={settings.adjust_asr ?? ''} onChange={handleSettingChange} className="w-full bg-white border border-slate-200 text-slate-900 px-4 py-2.5 rounded-lg focus:outline-none focus:border-dprd-green transition-colors" />
+                  </div>
+                  <div>
+                    <label className="block mb-2 text-slate-500 text-sm">Maghrib</label>
+                    <input type="number" name="adjust_maghrib" value={settings.adjust_maghrib ?? ''} onChange={handleSettingChange} className="w-full bg-white border border-slate-200 text-slate-900 px-4 py-2.5 rounded-lg focus:outline-none focus:border-dprd-green transition-colors" />
+                  </div>
+                  <div>
+                    <label className="block mb-2 text-slate-500 text-sm">Isya</label>
+                    <input type="number" name="adjust_isha" value={settings.adjust_isha ?? ''} onChange={handleSettingChange} className="w-full bg-white border border-slate-200 text-slate-900 px-4 py-2.5 rounded-lg focus:outline-none focus:border-dprd-green transition-colors" />
+                  </div>
+                </div>
+              </div>
+
+              <div className="bg-white shadow-sm backdrop-blur-xl border border-slate-200 rounded-2xl p-6">
+                <h3 className="mb-4 text-slate-800 border-b border-slate-200 pb-3 font-medium">Jadwal Kemenag (Sinkron Otomatis)</h3>
+                <p className="text-xs text-slate-500 mb-4">TV memakai jadwal resmi ini bila tersedia; bila belum sync / offline lama, otomatis pakai hitungan lokal sebagai fallback.</p>
+                <div className="mb-4">
+                  <label className="block mb-2 text-slate-500 text-sm">ID Kota (1219 = Kota Bandung)</label>
+                  <input type="text" name="schedule_city_id" value={settings.schedule_city_id || ''} onChange={handleSettingChange} className="w-full bg-white border border-slate-200 text-slate-900 px-4 py-2.5 rounded-lg focus:outline-none focus:border-dprd-green transition-colors" />
+                  <p className="text-xs text-slate-500 mt-1">Simpan Pengaturan dulu bila ID diubah, baru tekan Sinkronkan.</p>
+                </div>
+                <div className="text-sm text-slate-600 mb-4">
+                  <div>Kota: <span className="font-medium text-slate-800">{schedStatus?.city_name || '-'}</span></div>
+                  <div>Sync terakhir: <span className="font-medium text-slate-800">{schedStatus?.last_sync ? new Date(schedStatus.last_sync).toLocaleString('id-ID') : 'belum pernah'}</span></div>
+                  <div>Hari tersimpan: <span className="font-medium text-slate-800">{schedStatus?.days_stored ?? '-'}</span></div>
+                </div>
+                <button type="button" onClick={handleSyncSchedule} disabled={syncing} className="bg-dprd-green text-white font-semibold py-2.5 px-6 rounded-lg hover:bg-emerald-600 transition-colors shadow-lg disabled:opacity-50">
+                  {syncing ? 'Menyinkronkan...' : 'Sinkronkan Sekarang'}
+                </button>
               </div>
 
             </div>
