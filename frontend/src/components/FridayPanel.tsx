@@ -59,7 +59,7 @@ export const FridayPanel: React.FC = () => {
   };
 
   return (
-    <div className="flex flex-col gap-3 bg-[#097969] p-[24px] rounded-[20px] shadow-lg text-white w-[500px]">
+    <div className="flex flex-col gap-3 bg-emas p-[24px] rounded-[20px] shadow-lg text-white w-[500px]">
       <div className="flex flex-col gap-2">
         <div className="flex flex-col">
           <span className="font-outfit font-semibold text-[24px] opacity-90">Khatib</span>

@@ -399,7 +399,7 @@ const Admin: React.FC = () => {
               <input
                 type="password"
                 id="pin"
-                className="w-full bg-white border border-slate-300 text-slate-900 px-4 py-3 rounded-lg focus:outline-none focus:border-dprd-green transition-colors"
+                className="w-full bg-white border border-slate-300 text-slate-900 px-4 py-3 rounded-lg focus:outline-none focus:border-emas transition-colors"
                 required
                 placeholder="****"
                 value={pin}
@@ -407,7 +407,7 @@ const Admin: React.FC = () => {
               />
               {loginError && <div className="text-red-500 text-sm mt-2">{loginError}</div>}
             </div>
-            <button type="submit" className="w-full bg-dprd-green text-white font-semibold py-3 rounded-lg hover:bg-emerald-600 transition-colors shadow-lg">Masuk</button>
+            <button type="submit" className="w-full bg-emas text-white font-semibold py-3 rounded-lg hover:bg-emas-dark transition-colors shadow-lg">Masuk</button>
           </form>
         </div>
       </div>
@@ -427,37 +427,37 @@ const Admin: React.FC = () => {
         </div>
         <ul className="list-none flex flex-row md:flex-col gap-2 md:flex-1 overflow-x-auto whitespace-nowrap pb-2 md:pb-0">
           <li
-            className={`px-4 py-3 rounded-lg cursor-pointer transition-colors ${activeTab === 'settings' ? 'bg-dprd-green/10 text-dprd-green font-medium' : 'text-slate-600 hover:bg-slate-100'}`}
+            className={`px-4 py-3 rounded-lg cursor-pointer transition-colors ${activeTab === 'settings' ? 'bg-emas/10 text-emas font-medium' : 'text-slate-600 hover:bg-slate-100'}`}
             onClick={() => setActiveTab('settings')}
           >
             Pengaturan Umum
           </li>
           <li
-            className={`px-4 py-3 rounded-lg cursor-pointer transition-colors ${activeTab === 'announcements' ? 'bg-dprd-green/10 text-dprd-green font-medium' : 'text-slate-600 hover:bg-slate-100'}`}
+            className={`px-4 py-3 rounded-lg cursor-pointer transition-colors ${activeTab === 'announcements' ? 'bg-emas/10 text-emas font-medium' : 'text-slate-600 hover:bg-slate-100'}`}
             onClick={() => setActiveTab('announcements')}
           >
             Running Text
           </li>
           <li
-            className={`px-4 py-3 rounded-lg cursor-pointer transition-colors ${activeTab === 'quotes' ? 'bg-dprd-green/10 text-dprd-green font-medium' : 'text-slate-600 hover:bg-slate-100'}`}
+            className={`px-4 py-3 rounded-lg cursor-pointer transition-colors ${activeTab === 'quotes' ? 'bg-emas/10 text-emas font-medium' : 'text-slate-600 hover:bg-slate-100'}`}
             onClick={() => setActiveTab('quotes')}
           >
             Quotes
           </li>
           <li
-            className={`px-4 py-3 rounded-lg cursor-pointer transition-colors ${activeTab === 'wallpapers' ? 'bg-dprd-green/10 text-dprd-green font-medium' : 'text-slate-600 hover:bg-slate-100'}`}
+            className={`px-4 py-3 rounded-lg cursor-pointer transition-colors ${activeTab === 'wallpapers' ? 'bg-emas/10 text-emas font-medium' : 'text-slate-600 hover:bg-slate-100'}`}
             onClick={() => setActiveTab('wallpapers')}
           >
             Foto Background
           </li>
           <li
-            className={`px-4 py-3 rounded-lg cursor-pointer transition-colors ${activeTab === 'friday' ? 'bg-dprd-green/10 text-dprd-green font-medium' : 'text-slate-600 hover:bg-slate-100'}`}
+            className={`px-4 py-3 rounded-lg cursor-pointer transition-colors ${activeTab === 'friday' ? 'bg-emas/10 text-emas font-medium' : 'text-slate-600 hover:bg-slate-100'}`}
             onClick={() => setActiveTab('friday')}
           >
             Data Jumat
           </li>
           <li
-            className={`px-4 py-3 rounded-lg cursor-pointer transition-colors ${activeTab === 'testing' ? 'bg-dprd-green/10 text-dprd-green font-medium' : 'text-slate-600 hover:bg-slate-100'}`}
+            className={`px-4 py-3 rounded-lg cursor-pointer transition-colors ${activeTab === 'testing' ? 'bg-emas/10 text-emas font-medium' : 'text-slate-600 hover:bg-slate-100'}`}
             onClick={() => setActiveTab('testing')}
           >
             Pengujian
@@ -473,7 +473,7 @@ const Admin: React.FC = () => {
             <a 
               href="/downloads/mosque-tv.apk" 
               download="mosque-tv.apk" 
-              className="bg-emerald-600/10 text-emerald-700 border border-emerald-500/20 px-4 py-2 rounded-lg transition-all hover:bg-emerald-600 hover:text-white font-medium flex items-center gap-1.5 text-sm"
+              className="bg-emas-dark/10 text-emas-dark border border-emas/20 px-4 py-2 rounded-lg transition-all hover:bg-emas-dark hover:text-white font-medium flex items-center gap-1.5 text-sm"
             >
               📥 Download APK TV
             </a>
@@ -491,19 +491,19 @@ const Admin: React.FC = () => {
                 <h3 className="mb-4 text-slate-800 border-b border-slate-200 pb-3 font-medium">Informasi Masjid</h3>
                 <div className="mb-4">
                   <label className="block mb-2 text-slate-500 text-sm">Nama Masjid</label>
-                  <input type="text" name="mosque_name" value={settings.mosque_name} onChange={handleSettingChange} className="w-full bg-white border border-slate-200 text-slate-900 px-4 py-2.5 rounded-lg focus:outline-none focus:border-dprd-green transition-colors" />
+                  <input type="text" name="mosque_name" value={settings.mosque_name} onChange={handleSettingChange} className="w-full bg-white border border-slate-200 text-slate-900 px-4 py-2.5 rounded-lg focus:outline-none focus:border-emas transition-colors" />
                 </div>
                 <div className="mb-4">
                   <label className="block mb-2 text-slate-500 text-sm">Kecepatan Running Text</label>
                   <div className="flex gap-2 items-center">
-                    <input type="range" name="running_text_speed" min="5" max="30" value={settings.running_text_speed || '10'} onChange={handleSettingChange} className="w-full accent-dprd-green" />
+                    <input type="range" name="running_text_speed" min="5" max="30" value={settings.running_text_speed || '10'} onChange={handleSettingChange} className="w-full accent-emas" />
                     <span className="text-slate-600 font-semibold w-8 text-right">{settings.running_text_speed || '10'}</span>
                   </div>
                   <p className="text-xs text-slate-500 mt-1">Semakin besar angkanya, semakin cepat jalannya.</p>
                 </div>
                 <div className="mb-4">
                   <label className="block mb-2 text-slate-500 text-sm">URL Stream Mekkah (YouTube Embed)</label>
-                  <input type="text" name="mecca_stream_url" value={settings.mecca_stream_url} onChange={handleSettingChange} className="w-full bg-white border border-slate-200 text-slate-900 px-4 py-2.5 rounded-lg focus:outline-none focus:border-dprd-green transition-colors" />
+                  <input type="text" name="mecca_stream_url" value={settings.mecca_stream_url} onChange={handleSettingChange} className="w-full bg-white border border-slate-200 text-slate-900 px-4 py-2.5 rounded-lg focus:outline-none focus:border-emas transition-colors" />
                 </div>
                 <div className="mb-4 flex items-center gap-3">
                   <input
@@ -511,21 +511,21 @@ const Admin: React.FC = () => {
                     id="mecca_stream_enabled"
                     checked={settings.mecca_stream_enabled !== '0'}
                     onChange={e => setSettings({ ...settings, mecca_stream_enabled: e.target.checked ? '1' : '0' })}
-                    className="w-5 h-5 accent-dprd-green"
+                    className="w-5 h-5 accent-emas"
                   />
                   <label htmlFor="mecca_stream_enabled" className="text-slate-700">Tampilkan Livestream Mekkah</label>
                 </div>
                 <div className="mb-4 flex items-center gap-3 flex-wrap">
-                  <span className={`px-3 py-1 rounded-full text-xs font-medium ${settings.mecca_stream_valid === '0' ? 'bg-red-100 text-red-600' : 'bg-emerald-100 text-emerald-700'}`}>
+                  <span className={`px-3 py-1 rounded-full text-xs font-medium ${settings.mecca_stream_valid === '0' ? 'bg-red-100 text-red-600' : 'bg-emas/15 text-emas-dark'}`}>
                     {settings.mecca_stream_valid === '0' ? 'URL tidak valid — dilewati TV' : 'URL OK / belum dicek'}
                   </span>
-                  <button type="button" onClick={handleCheckStream} disabled={syncing} className="text-sm text-dprd-green hover:underline disabled:opacity-50">
+                  <button type="button" onClick={handleCheckStream} disabled={syncing} className="text-sm text-emas hover:underline disabled:opacity-50">
                     {syncing ? 'Memeriksa...' : 'Cek URL sekarang'}
                   </button>
                 </div>
                 <div className="mb-4">
                   <label className="block mb-2 text-slate-500 text-sm">Mode Slideshow</label>
-                  <select name="slideshow_mode" value={settings.slideshow_mode || 'auto'} onChange={handleSettingChange} className="w-full bg-white border border-slate-200 text-slate-900 px-4 py-2.5 rounded-lg focus:outline-none focus:border-dprd-green transition-colors">
+                  <select name="slideshow_mode" value={settings.slideshow_mode || 'auto'} onChange={handleSettingChange} className="w-full bg-white border border-slate-200 text-slate-900 px-4 py-2.5 rounded-lg focus:outline-none focus:border-emas transition-colors">
                     <option value="auto">Otomatis (Berotasi 30 detik)</option>
                     <option value="manual">Manual</option>
                   </select>
@@ -533,7 +533,7 @@ const Admin: React.FC = () => {
                 {settings.slideshow_mode === 'manual' && (
                   <div>
                     <label className="block mb-2 text-slate-500 text-sm">Pilih Slide Aktif</label>
-                    <select name="slideshow_manual_slide" value={settings.slideshow_manual_slide || 'wallpaper'} onChange={handleSettingChange} className="w-full bg-white border border-slate-200 text-slate-900 px-4 py-2.5 rounded-lg focus:outline-none focus:border-dprd-green transition-colors">
+                    <select name="slideshow_manual_slide" value={settings.slideshow_manual_slide || 'wallpaper'} onChange={handleSettingChange} className="w-full bg-white border border-slate-200 text-slate-900 px-4 py-2.5 rounded-lg focus:outline-none focus:border-emas transition-colors">
                       <option value="wallpaper">Wallpaper</option>
                       <option value="quote">Quotes</option>
                       <option value="mecca">Livestream Mekkah</option>
@@ -546,15 +546,15 @@ const Admin: React.FC = () => {
                 <h3 className="mb-4 text-slate-800 border-b border-slate-200 pb-3 font-medium">Lokasi & Waktu</h3>
                 <div className="mb-4">
                   <label className="block mb-2 text-slate-500 text-sm">Latitude</label>
-                  <input type="text" name="latitude" value={settings.latitude} onChange={handleSettingChange} className="w-full bg-white border border-slate-200 text-slate-900 px-4 py-2.5 rounded-lg focus:outline-none focus:border-dprd-green transition-colors" />
+                  <input type="text" name="latitude" value={settings.latitude} onChange={handleSettingChange} className="w-full bg-white border border-slate-200 text-slate-900 px-4 py-2.5 rounded-lg focus:outline-none focus:border-emas transition-colors" />
                 </div>
                 <div className="mb-4">
                   <label className="block mb-2 text-slate-500 text-sm">Longitude</label>
-                  <input type="text" name="longitude" value={settings.longitude} onChange={handleSettingChange} className="w-full bg-white border border-slate-200 text-slate-900 px-4 py-2.5 rounded-lg focus:outline-none focus:border-dprd-green transition-colors" />
+                  <input type="text" name="longitude" value={settings.longitude} onChange={handleSettingChange} className="w-full bg-white border border-slate-200 text-slate-900 px-4 py-2.5 rounded-lg focus:outline-none focus:border-emas transition-colors" />
                 </div>
                 <div>
                   <label className="block mb-2 text-slate-500 text-sm">Koreksi Hijriah (Hari)</label>
-                  <input type="number" name="hijri_adjustment" value={settings.hijri_adjustment} onChange={handleSettingChange} className="w-full bg-white border border-slate-200 text-slate-900 px-4 py-2.5 rounded-lg focus:outline-none focus:border-dprd-green transition-colors" />
+                  <input type="number" name="hijri_adjustment" value={settings.hijri_adjustment} onChange={handleSettingChange} className="w-full bg-white border border-slate-200 text-slate-900 px-4 py-2.5 rounded-lg focus:outline-none focus:border-emas transition-colors" />
                 </div>
               </div>
 
@@ -563,26 +563,26 @@ const Admin: React.FC = () => {
                 <div className="flex flex-col md:flex-row gap-3 mb-4">
                   <div className="w-full md:w-1/2">
                     <label className="block mb-2 text-slate-500 text-sm">Subuh</label>
-                    <input type="number" name="iqamah_fajr" value={settings.iqamah_fajr || ''} onChange={handleSettingChange} className="w-full bg-white border border-slate-200 text-slate-900 px-4 py-2.5 rounded-lg focus:outline-none focus:border-dprd-green transition-colors" />
+                    <input type="number" name="iqamah_fajr" value={settings.iqamah_fajr || ''} onChange={handleSettingChange} className="w-full bg-white border border-slate-200 text-slate-900 px-4 py-2.5 rounded-lg focus:outline-none focus:border-emas transition-colors" />
                   </div>
                   <div className="w-full md:w-1/2">
                     <label className="block mb-2 text-slate-500 text-sm">Dzuhur</label>
-                    <input type="number" name="iqamah_dhuhr" value={settings.iqamah_dhuhr || ''} onChange={handleSettingChange} className="w-full bg-white border border-slate-200 text-slate-900 px-4 py-2.5 rounded-lg focus:outline-none focus:border-dprd-green transition-colors" />
+                    <input type="number" name="iqamah_dhuhr" value={settings.iqamah_dhuhr || ''} onChange={handleSettingChange} className="w-full bg-white border border-slate-200 text-slate-900 px-4 py-2.5 rounded-lg focus:outline-none focus:border-emas transition-colors" />
                   </div>
                 </div>
                 <div className="flex flex-col md:flex-row gap-3 mb-4">
                   <div className="w-full md:w-1/2">
                     <label className="block mb-2 text-slate-500 text-sm">Ashar</label>
-                    <input type="number" name="iqamah_asr" value={settings.iqamah_asr || ''} onChange={handleSettingChange} className="w-full bg-white border border-slate-200 text-slate-900 px-4 py-2.5 rounded-lg focus:outline-none focus:border-dprd-green transition-colors" />
+                    <input type="number" name="iqamah_asr" value={settings.iqamah_asr || ''} onChange={handleSettingChange} className="w-full bg-white border border-slate-200 text-slate-900 px-4 py-2.5 rounded-lg focus:outline-none focus:border-emas transition-colors" />
                   </div>
                   <div className="w-full md:w-1/2">
                     <label className="block mb-2 text-slate-500 text-sm">Maghrib</label>
-                    <input type="number" name="iqamah_maghrib" value={settings.iqamah_maghrib || ''} onChange={handleSettingChange} className="w-full bg-white border border-slate-200 text-slate-900 px-4 py-2.5 rounded-lg focus:outline-none focus:border-dprd-green transition-colors" />
+                    <input type="number" name="iqamah_maghrib" value={settings.iqamah_maghrib || ''} onChange={handleSettingChange} className="w-full bg-white border border-slate-200 text-slate-900 px-4 py-2.5 rounded-lg focus:outline-none focus:border-emas transition-colors" />
                   </div>
                 </div>
                 <div>
                   <label className="block mb-2 text-slate-500 text-sm">Isya</label>
-                  <input type="number" name="iqamah_isha" value={settings.iqamah_isha || ''} onChange={handleSettingChange} className="w-full bg-white border border-slate-200 text-slate-900 px-4 py-2.5 rounded-lg focus:outline-none focus:border-dprd-green transition-colors" />
+                  <input type="number" name="iqamah_isha" value={settings.iqamah_isha || ''} onChange={handleSettingChange} className="w-full bg-white border border-slate-200 text-slate-900 px-4 py-2.5 rounded-lg focus:outline-none focus:border-emas transition-colors" />
                 </div>
               </div>
 
@@ -591,32 +591,32 @@ const Admin: React.FC = () => {
                 <p className="text-xs text-slate-500 mb-4">Basis: Kemenag (Subuh 20°, Isya 18°, Ashar Syafi'i) + ikhtiyat. Angka di bawah = sisa koreksi, terukur pas di 3 musim. Negatif = majukan, positif = mundurkan.</p>
                 <div className="mb-4">
                   <label className="block mb-2 text-slate-500 text-sm">Ikhtiyat (pengaman, tidak untuk Syuruq)</label>
-                  <input type="number" name="ikhtiyat" value={settings.ikhtiyat ?? ''} onChange={handleSettingChange} className="w-full bg-white border border-slate-200 text-slate-900 px-4 py-2.5 rounded-lg focus:outline-none focus:border-dprd-green transition-colors" />
+                  <input type="number" name="ikhtiyat" value={settings.ikhtiyat ?? ''} onChange={handleSettingChange} className="w-full bg-white border border-slate-200 text-slate-900 px-4 py-2.5 rounded-lg focus:outline-none focus:border-emas transition-colors" />
                 </div>
                 <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
                   <div>
                     <label className="block mb-2 text-slate-500 text-sm">Subuh</label>
-                    <input type="number" name="adjust_fajr" value={settings.adjust_fajr ?? ''} onChange={handleSettingChange} className="w-full bg-white border border-slate-200 text-slate-900 px-4 py-2.5 rounded-lg focus:outline-none focus:border-dprd-green transition-colors" />
+                    <input type="number" name="adjust_fajr" value={settings.adjust_fajr ?? ''} onChange={handleSettingChange} className="w-full bg-white border border-slate-200 text-slate-900 px-4 py-2.5 rounded-lg focus:outline-none focus:border-emas transition-colors" />
                   </div>
                   <div>
                     <label className="block mb-2 text-slate-500 text-sm">Syuruq</label>
-                    <input type="number" name="adjust_sunrise" value={settings.adjust_sunrise ?? ''} onChange={handleSettingChange} className="w-full bg-white border border-slate-200 text-slate-900 px-4 py-2.5 rounded-lg focus:outline-none focus:border-dprd-green transition-colors" />
+                    <input type="number" name="adjust_sunrise" value={settings.adjust_sunrise ?? ''} onChange={handleSettingChange} className="w-full bg-white border border-slate-200 text-slate-900 px-4 py-2.5 rounded-lg focus:outline-none focus:border-emas transition-colors" />
                   </div>
                   <div>
                     <label className="block mb-2 text-slate-500 text-sm">Dzuhur</label>
-                    <input type="number" name="adjust_dhuhr" value={settings.adjust_dhuhr ?? ''} onChange={handleSettingChange} className="w-full bg-white border border-slate-200 text-slate-900 px-4 py-2.5 rounded-lg focus:outline-none focus:border-dprd-green transition-colors" />
+                    <input type="number" name="adjust_dhuhr" value={settings.adjust_dhuhr ?? ''} onChange={handleSettingChange} className="w-full bg-white border border-slate-200 text-slate-900 px-4 py-2.5 rounded-lg focus:outline-none focus:border-emas transition-colors" />
                   </div>
                   <div>
                     <label className="block mb-2 text-slate-500 text-sm">Ashar</label>
-                    <input type="number" name="adjust_asr" value={settings.adjust_asr ?? ''} onChange={handleSettingChange} className="w-full bg-white border border-slate-200 text-slate-900 px-4 py-2.5 rounded-lg focus:outline-none focus:border-dprd-green transition-colors" />
+                    <input type="number" name="adjust_asr" value={settings.adjust_asr ?? ''} onChange={handleSettingChange} className="w-full bg-white border border-slate-200 text-slate-900 px-4 py-2.5 rounded-lg focus:outline-none focus:border-emas transition-colors" />
                   </div>
                   <div>
                     <label className="block mb-2 text-slate-500 text-sm">Maghrib</label>
-                    <input type="number" name="adjust_maghrib" value={settings.adjust_maghrib ?? ''} onChange={handleSettingChange} className="w-full bg-white border border-slate-200 text-slate-900 px-4 py-2.5 rounded-lg focus:outline-none focus:border-dprd-green transition-colors" />
+                    <input type="number" name="adjust_maghrib" value={settings.adjust_maghrib ?? ''} onChange={handleSettingChange} className="w-full bg-white border border-slate-200 text-slate-900 px-4 py-2.5 rounded-lg focus:outline-none focus:border-emas transition-colors" />
                   </div>
                   <div>
                     <label className="block mb-2 text-slate-500 text-sm">Isya</label>
-                    <input type="number" name="adjust_isha" value={settings.adjust_isha ?? ''} onChange={handleSettingChange} className="w-full bg-white border border-slate-200 text-slate-900 px-4 py-2.5 rounded-lg focus:outline-none focus:border-dprd-green transition-colors" />
+                    <input type="number" name="adjust_isha" value={settings.adjust_isha ?? ''} onChange={handleSettingChange} className="w-full bg-white border border-slate-200 text-slate-900 px-4 py-2.5 rounded-lg focus:outline-none focus:border-emas transition-colors" />
                   </div>
                 </div>
               </div>
@@ -626,7 +626,7 @@ const Admin: React.FC = () => {
                 <p className="text-xs text-slate-500 mb-4">TV memakai jadwal resmi ini bila tersedia; bila belum sync / offline lama, otomatis pakai hitungan lokal sebagai fallback.</p>
                 <div className="mb-4">
                   <label className="block mb-2 text-slate-500 text-sm">ID Kota (1219 = Kota Bandung)</label>
-                  <input type="text" name="schedule_city_id" value={settings.schedule_city_id || ''} onChange={handleSettingChange} className="w-full bg-white border border-slate-200 text-slate-900 px-4 py-2.5 rounded-lg focus:outline-none focus:border-dprd-green transition-colors" />
+                  <input type="text" name="schedule_city_id" value={settings.schedule_city_id || ''} onChange={handleSettingChange} className="w-full bg-white border border-slate-200 text-slate-900 px-4 py-2.5 rounded-lg focus:outline-none focus:border-emas transition-colors" />
                   <p className="text-xs text-slate-500 mt-1">Simpan Pengaturan dulu bila ID diubah, baru tekan Sinkronkan.</p>
                 </div>
                 <div className="text-sm text-slate-600 mb-4">
@@ -634,14 +634,14 @@ const Admin: React.FC = () => {
                   <div>Sync terakhir: <span className="font-medium text-slate-800">{schedStatus?.last_sync ? new Date(schedStatus.last_sync).toLocaleString('id-ID') : 'belum pernah'}</span></div>
                   <div>Hari tersimpan: <span className="font-medium text-slate-800">{schedStatus?.days_stored ?? '-'}</span></div>
                 </div>
-                <button type="button" onClick={handleSyncSchedule} disabled={syncing} className="bg-dprd-green text-white font-semibold py-2.5 px-6 rounded-lg hover:bg-emerald-600 transition-colors shadow-lg disabled:opacity-50">
+                <button type="button" onClick={handleSyncSchedule} disabled={syncing} className="bg-emas text-white font-semibold py-2.5 px-6 rounded-lg hover:bg-emas-dark transition-colors shadow-lg disabled:opacity-50">
                   {syncing ? 'Menyinkronkan...' : 'Sinkronkan Sekarang'}
                 </button>
               </div>
 
             </div>
 
-            <button type="submit" className="mt-6 bg-dprd-green text-white font-semibold py-3 px-6 rounded-lg hover:bg-emerald-600 transition-colors shadow-lg">Simpan Pengaturan</button>
+            <button type="submit" className="mt-6 bg-emas text-white font-semibold py-3 px-6 rounded-lg hover:bg-emas-dark transition-colors shadow-lg">Simpan Pengaturan</button>
           </form>
         )}
 
@@ -656,14 +656,14 @@ const Admin: React.FC = () => {
                     id="use_mock_time"
                     checked={settings.use_mock_time === '1'}
                     onChange={e => setSettings({ ...settings, use_mock_time: e.target.checked ? '1' : '0' })}
-                    className="w-5 h-5 accent-dprd-green"
+                    className="w-5 h-5 accent-emas"
                   />
                   <label htmlFor="use_mock_time" className="text-slate-700">Gunakan Waktu Simulasi</label>
                 </div>
                 <div>
                   <label className="block mb-2 text-slate-500 text-sm">Atur Waktu (Jam:Menit)</label>
                   <div className="flex gap-2">
-                    <input type="time" name="mock_time" value={settings.mock_time || '12:00'} onChange={handleSettingChange} className="w-full bg-white border border-slate-200 text-slate-900 px-4 py-2.5 rounded-lg focus:outline-none focus:border-dprd-green transition-colors" />
+                    <input type="time" name="mock_time" value={settings.mock_time || '12:00'} onChange={handleSettingChange} className="w-full bg-white border border-slate-200 text-slate-900 px-4 py-2.5 rounded-lg focus:outline-none focus:border-emas transition-colors" />
                   </div>
                   <p className="text-xs text-slate-500 mt-2">Untuk testing layar Adhan/Iqomah. Ubah waktu ini menjadi 5 menit sebelum jadwal sholat.</p>
                 </div>
@@ -677,7 +677,7 @@ const Admin: React.FC = () => {
                     id="use_mock_friday"
                     checked={settings.use_mock_friday === '1'}
                     onChange={e => setSettings({ ...settings, use_mock_friday: e.target.checked ? '1' : '0' })}
-                    className="w-5 h-5 accent-dprd-green"
+                    className="w-5 h-5 accent-emas"
                   />
                   <label htmlFor="use_mock_friday" className="text-slate-700">Anggap Sekarang Hari Jumat</label>
                 </div>
@@ -687,7 +687,7 @@ const Admin: React.FC = () => {
                 <h3 className="mb-4 text-slate-800 border-b border-slate-200 pb-3 font-medium">Paksa Mode Layar (Testing)</h3>
                 <div className="mb-4">
                   <label className="block mb-2 text-slate-500 text-sm">Pilih Layar yang Ingin Ditampilkan</label>
-                  <select name="force_screen_mode" value={settings.force_screen_mode || 'auto'} onChange={handleSettingChange} className="w-full bg-white border border-slate-200 text-slate-900 px-4 py-2.5 rounded-lg focus:outline-none focus:border-dprd-green transition-colors">
+                  <select name="force_screen_mode" value={settings.force_screen_mode || 'auto'} onChange={handleSettingChange} className="w-full bg-white border border-slate-200 text-slate-900 px-4 py-2.5 rounded-lg focus:outline-none focus:border-emas transition-colors">
                     <option value="auto">Normal (Otomatis ikuti waktu)</option>
                     <option value="countdown">Menjelang Adzan (Hitung Mundur)</option>
                     <option value="adhan">Layar Berkumandang Adzan (1 menit)</option>
@@ -699,7 +699,7 @@ const Admin: React.FC = () => {
               </div>
 
             </div>
-            <button type="submit" className="mt-6 bg-dprd-green text-white font-semibold py-3 px-6 rounded-lg hover:bg-emerald-600 transition-colors shadow-lg">Simpan Pengujian</button>
+            <button type="submit" className="mt-6 bg-emas text-white font-semibold py-3 px-6 rounded-lg hover:bg-emas-dark transition-colors shadow-lg">Simpan Pengujian</button>
           </form>
         )}
 
@@ -710,9 +710,9 @@ const Admin: React.FC = () => {
               <form onSubmit={handleAddAnnouncement} className="flex flex-col md:flex-row gap-4 md:items-end">
                 <div className="flex-1">
                   <label className="block mb-2 text-slate-500 text-sm">Teks Running Text (tampil di TV bawah)</label>
-                  <input type="text" value={newAnnText} onChange={e => setNewAnnText(e.target.value)} className="w-full bg-white border border-slate-200 text-slate-900 px-4 py-2.5 rounded-lg focus:outline-none focus:border-dprd-green transition-colors" required />
+                  <input type="text" value={newAnnText} onChange={e => setNewAnnText(e.target.value)} className="w-full bg-white border border-slate-200 text-slate-900 px-4 py-2.5 rounded-lg focus:outline-none focus:border-emas transition-colors" required />
                 </div>
-                <button type="submit" className="bg-dprd-green text-white font-semibold py-2.5 px-6 rounded-lg hover:bg-emerald-600 transition-colors shadow-lg">Tambah</button>
+                <button type="submit" className="bg-emas text-white font-semibold py-2.5 px-6 rounded-lg hover:bg-emas-dark transition-colors shadow-lg">Tambah</button>
               </form>
             </div>
 
@@ -754,18 +754,18 @@ const Admin: React.FC = () => {
               <form onSubmit={handleAddQuote} className="flex flex-col gap-4">
                 <div>
                   <label className="block mb-2 text-slate-500 text-sm">Teks Arab (Opsional)</label>
-                  <input type="text" value={newQuote.text_arabic} onChange={e => setNewQuote({ ...newQuote, text_arabic: e.target.value })} className="w-full bg-white border border-slate-200 text-slate-900 px-4 py-2.5 rounded-lg focus:outline-none focus:border-dprd-green transition-colors font-arabic text-xl" dir="rtl" />
+                  <input type="text" value={newQuote.text_arabic} onChange={e => setNewQuote({ ...newQuote, text_arabic: e.target.value })} className="w-full bg-white border border-slate-200 text-slate-900 px-4 py-2.5 rounded-lg focus:outline-none focus:border-emas transition-colors font-arabic text-xl" dir="rtl" />
                 </div>
                 <div>
                   <label className="block mb-2 text-slate-500 text-sm">Terjemahan / Teks Quote</label>
-                  <input type="text" value={newQuote.text_translation} onChange={e => setNewQuote({ ...newQuote, text_translation: e.target.value })} className="w-full bg-white border border-slate-200 text-slate-900 px-4 py-2.5 rounded-lg focus:outline-none focus:border-dprd-green transition-colors" required />
+                  <input type="text" value={newQuote.text_translation} onChange={e => setNewQuote({ ...newQuote, text_translation: e.target.value })} className="w-full bg-white border border-slate-200 text-slate-900 px-4 py-2.5 rounded-lg focus:outline-none focus:border-emas transition-colors" required />
                 </div>
                 <div>
                   <label className="block mb-2 text-slate-500 text-sm">Sumber (Opsional)</label>
-                  <input type="text" value={newQuote.source} onChange={e => setNewQuote({ ...newQuote, source: e.target.value })} className="w-full bg-white border border-slate-200 text-slate-900 px-4 py-2.5 rounded-lg focus:outline-none focus:border-dprd-green transition-colors" />
+                  <input type="text" value={newQuote.source} onChange={e => setNewQuote({ ...newQuote, source: e.target.value })} className="w-full bg-white border border-slate-200 text-slate-900 px-4 py-2.5 rounded-lg focus:outline-none focus:border-emas transition-colors" />
                 </div>
                 <div className="flex justify-end mt-2">
-                  <button type="submit" className="bg-dprd-green text-white font-semibold py-2.5 px-6 rounded-lg hover:bg-emerald-600 transition-colors shadow-lg">Tambah Quote</button>
+                  <button type="submit" className="bg-emas text-white font-semibold py-2.5 px-6 rounded-lg hover:bg-emas-dark transition-colors shadow-lg">Tambah Quote</button>
                 </div>
               </form>
             </div>
@@ -781,7 +781,7 @@ const Admin: React.FC = () => {
                       <div className="font-arabic text-xl text-dprd-lightgold text-right mb-2 mt-4">{q.text_arabic}</div>
                     )}
                     <div className="text-slate-800 text-md font-medium mb-1 {q.text_arabic ? '' : 'mt-4'}">{q.text_translation}</div>
-                    <div className="text-dprd-green text-sm mt-auto pt-4">{q.source}</div>
+                    <div className="text-emas text-sm mt-auto pt-4">{q.source}</div>
 
                     <button onClick={() => handleDeleteQuote(q.id)} className="absolute bottom-4 right-4 bg-red-500/10 text-red-400 hover:bg-red-500 hover:text-white px-3 py-1.5 rounded-lg text-sm transition-colors opacity-0 group-hover:opacity-100">
                       Hapus
@@ -807,11 +807,11 @@ const Admin: React.FC = () => {
                     type="file"
                     accept="image/*"
                     onChange={e => setUploadFile(e.target.files?.[0] || null)}
-                    className="w-full bg-white border border-slate-200 text-slate-900 px-4 py-2.5 rounded-lg focus:outline-none focus:border-dprd-green transition-colors file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-dprd-green file:text-white hover:file:bg-emerald-600"
+                    className="w-full bg-white border border-slate-200 text-slate-900 px-4 py-2.5 rounded-lg focus:outline-none focus:border-emas transition-colors file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-emas file:text-white hover:file:bg-emas-dark"
                     required
                   />
                 </div>
-                <button type="submit" className="bg-dprd-green text-white font-semibold py-2.5 px-6 rounded-lg hover:bg-emerald-600 transition-colors shadow-lg">Upload</button>
+                <button type="submit" className="bg-emas text-white font-semibold py-2.5 px-6 rounded-lg hover:bg-emas-dark transition-colors shadow-lg">Upload</button>
               </form>
             </div>
 
@@ -847,15 +847,15 @@ const Admin: React.FC = () => {
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                   <div>
                     <label className="block mb-2 text-slate-500 text-sm">Tanggal (Jumat)</label>
-                    <input type="date" value={newFriday.date} onChange={e => setNewFriday({ ...newFriday, date: e.target.value })} className="w-full bg-white border border-slate-200 text-slate-900 px-4 py-2.5 rounded-lg focus:outline-none focus:border-dprd-green transition-colors" required />
+                    <input type="date" value={newFriday.date} onChange={e => setNewFriday({ ...newFriday, date: e.target.value })} className="w-full bg-white border border-slate-200 text-slate-900 px-4 py-2.5 rounded-lg focus:outline-none focus:border-emas transition-colors" required />
                   </div>
                   <div>
                     <label className="block mb-2 text-slate-500 text-sm">Nama Khatib</label>
-                    <input type="text" value={newFriday.khatib_name} onChange={e => setNewFriday({ ...newFriday, khatib_name: e.target.value })} className="w-full bg-white border border-slate-200 text-slate-900 px-4 py-2.5 rounded-lg focus:outline-none focus:border-dprd-green transition-colors" required />
+                    <input type="text" value={newFriday.khatib_name} onChange={e => setNewFriday({ ...newFriday, khatib_name: e.target.value })} className="w-full bg-white border border-slate-200 text-slate-900 px-4 py-2.5 rounded-lg focus:outline-none focus:border-emas transition-colors" required />
                   </div>
                   <div>
                     <label className="block mb-2 text-slate-500 text-sm">Nama Muadzin</label>
-                    <input type="text" value={newFriday.muadzin_name} onChange={e => setNewFriday({ ...newFriday, muadzin_name: e.target.value })} className="w-full bg-white border border-slate-200 text-slate-900 px-4 py-2.5 rounded-lg focus:outline-none focus:border-dprd-green transition-colors" required />
+                    <input type="text" value={newFriday.muadzin_name} onChange={e => setNewFriday({ ...newFriday, muadzin_name: e.target.value })} className="w-full bg-white border border-slate-200 text-slate-900 px-4 py-2.5 rounded-lg focus:outline-none focus:border-emas transition-colors" required />
                   </div>
                 </div>
 
@@ -864,27 +864,27 @@ const Admin: React.FC = () => {
                     <label className="block mb-2 text-slate-500 text-sm">Total Pemasukan</label>
                     <div className="relative">
                       <div className="absolute inset-y-0 left-0 flex items-center pl-4 pointer-events-none text-slate-500">Rp</div>
-                      <input type="text" value={formatInputRupiah(newFriday.income)} onChange={e => handleCurrencyChange('income', e.target.value)} className="w-full bg-white border border-slate-200 text-slate-900 pl-11 pr-4 py-2.5 rounded-lg focus:outline-none focus:border-dprd-green transition-colors" placeholder="0" />
+                      <input type="text" value={formatInputRupiah(newFriday.income)} onChange={e => handleCurrencyChange('income', e.target.value)} className="w-full bg-white border border-slate-200 text-slate-900 pl-11 pr-4 py-2.5 rounded-lg focus:outline-none focus:border-emas transition-colors" placeholder="0" />
                     </div>
                   </div>
                   <div>
                     <label className="block mb-2 text-slate-500 text-sm">Total Pengeluaran</label>
                     <div className="relative">
                       <div className="absolute inset-y-0 left-0 flex items-center pl-4 pointer-events-none text-slate-500">Rp</div>
-                      <input type="text" value={formatInputRupiah(newFriday.expense)} onChange={e => handleCurrencyChange('expense', e.target.value)} className="w-full bg-white border border-slate-200 text-slate-900 pl-11 pr-4 py-2.5 rounded-lg focus:outline-none focus:border-dprd-green transition-colors" placeholder="0" />
+                      <input type="text" value={formatInputRupiah(newFriday.expense)} onChange={e => handleCurrencyChange('expense', e.target.value)} className="w-full bg-white border border-slate-200 text-slate-900 pl-11 pr-4 py-2.5 rounded-lg focus:outline-none focus:border-emas transition-colors" placeholder="0" />
                     </div>
                   </div>
                   <div>
                     <label className="block mb-2 text-slate-500 text-sm">Kas Saldo Saat Ini</label>
                     <div className="relative">
                       <div className="absolute inset-y-0 left-0 flex items-center pl-4 pointer-events-none text-slate-500">Rp</div>
-                      <input type="text" value={formatInputRupiah(newFriday.balance)} onChange={e => handleCurrencyChange('balance', e.target.value)} className="w-full bg-white border border-slate-200 text-slate-900 pl-11 pr-4 py-2.5 rounded-lg focus:outline-none focus:border-dprd-green transition-colors" placeholder="0" />
+                      <input type="text" value={formatInputRupiah(newFriday.balance)} onChange={e => handleCurrencyChange('balance', e.target.value)} className="w-full bg-white border border-slate-200 text-slate-900 pl-11 pr-4 py-2.5 rounded-lg focus:outline-none focus:border-emas transition-colors" placeholder="0" />
                     </div>
                   </div>
                 </div>
 
                 <div className="flex justify-end mt-2">
-                  <button type="submit" className="bg-dprd-green text-white font-semibold py-2.5 px-6 rounded-lg hover:bg-emerald-600 transition-colors shadow-lg">Tambah Data</button>
+                  <button type="submit" className="bg-emas text-white font-semibold py-2.5 px-6 rounded-lg hover:bg-emas-dark transition-colors shadow-lg">Tambah Data</button>
                 </div>
               </form>
             </div>
@@ -932,7 +932,7 @@ const Admin: React.FC = () => {
       </div>
 
       {/* Toast Notification */}
-      <div className={`fixed bottom-6 right-6 px-6 py-4 rounded-xl bg-emerald-500 text-slate-800 font-medium shadow-[0_4px_12px_rgba(0,0,0,0.15)] transition-all duration-300 z-[2000] ${toast ? 'translate-y-0 opacity-100' : 'translate-y-[100px] opacity-0'}`}>
+      <div className={`fixed bottom-6 right-6 px-6 py-4 rounded-xl bg-emas text-slate-800 font-medium shadow-[0_4px_12px_rgba(0,0,0,0.15)] transition-all duration-300 z-[2000] ${toast ? 'translate-y-0 opacity-100' : 'translate-y-[100px] opacity-0'}`}>
         {toast}
       </div>
     </div>

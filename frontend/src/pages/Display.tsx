@@ -223,7 +223,7 @@ const Display: React.FC = () => {
         <div id="app-container" className={`absolute text inset-0 flex z-10 transition-opacity duration-1000 ${isAdhanOrIqamah ? 'opacity-0' : 'opacity-100'}`}>
 
           {/* Left Sidebar */}
-          <aside className="w-[470px] h-full flex flex-col justify-between bg-[#097969] pl-4 pr-6 py-6 shadow-2xl relative z-20">
+          <aside className="w-[470px] h-full flex flex-col justify-between bg-emas pl-4 pr-6 py-6 shadow-2xl relative z-20">
 
             <div className="flex flex-col mt-12 gap-2">
               <h1 className="font-outfit font-bold text-[40px] leading-tight uppercase">{settings?.mosque_name || 'MASJID ASY SYURA'}</h1>
@@ -240,7 +240,7 @@ const Display: React.FC = () => {
               <div className="font-outfit font-normal text-3xl">{dateHijri}</div>
             </div>
 
-            <div className="flex flex-col gap-2 bg-[#0b6e5a] rounded-[20px] p-[24px] mb-[120px]">
+            <div className="flex flex-col gap-2 bg-emas-dark rounded-[20px] p-[24px] mb-[120px]">
               <div className="font-outfit font-semibold text-[32px]">Menuju {prayerState?.prayer?.name}</div>
               <div className="font-inter font-bold text-[108px] leading-none tracking-tighter tabular-nums text-white">
                 {activeTimeStr}
@@ -257,7 +257,7 @@ const Display: React.FC = () => {
             <div className="flex justify-end items-start gap-8">
               <div className="flex flex-col items-end gap-6">
                 {/* Logos */}
-                <div className="flex bg-[#097969] rounded-[20px] px-8 py-4 h-[97px] items-center gap-6 shadow-xl">
+                <div className="flex bg-emas rounded-[20px] px-8 py-4 h-[97px] items-center gap-6 shadow-xl">
                   <img src="/assets/logos/logo-setwan.png" className="h-[60px] object-contain" />
                   <img src="/assets/logos/logo-dprd.png" className="h-[60px] object-contain" />
                 </div>
@@ -294,7 +294,7 @@ const Display: React.FC = () => {
                     if (pt) timeStr = formatTime(pt, settings?.timezone);
                   }
                   return (
-                    <div key={key} className="flex-1 flex flex-col bg-[#097969] rounded-[20px] p-[16px] shadow-lg">
+                    <div key={key} className="flex-1 flex flex-col bg-emas rounded-[20px] p-[16px] shadow-lg">
                       <div className="font-outfit font-semibold text-[32px]">{PRAYER_NAMES[key]}</div>
                       <div className="font-inter font-bold text-[64px]">{timeStr}</div>
                     </div>

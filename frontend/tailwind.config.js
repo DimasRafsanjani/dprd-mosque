@@ -8,10 +8,16 @@ export default {
     extend: {
       colors: {
         dprd: {
-          green: '#00a651',
           gold: '#D09656',
           lightgold: '#EBC071',
           cream: '#F5D8AE'
+        },
+        // Emas netralitas DPRD: emas tua untuk panel & tombol (aman untuk teks putih),
+        // menggantikan hijau (#097969/#00a651) di seluruh app.
+        emas: {
+          DEFAULT: '#7E6113',
+          dark: '#6B5010',
+          light: '#EBC071'
         },
         primary: '#1e293b', // slate-800
       },

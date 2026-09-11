@@ -27,7 +27,7 @@ export const AdhanOverlay: React.FC<AdhanOverlayProps> = ({ state, prayerName, c
     const bottomLeftSvg = '/assets/ornaments/bottom-left.svg';
 
     return (
-      <div id="adhan-overlay" className="absolute inset-0 z-[9999] overflow-hidden bg-[#097969] flex items-center justify-center">
+      <div id="adhan-overlay" className="absolute inset-0 z-[9999] overflow-hidden bg-emas flex items-center justify-center">
         {/* Ornaments */}
         <img src={topRightSvg} alt="" className="absolute top-0 right-0 pointer-events-none w-50" />
         <img src={bottomLeftSvg} alt="" className="absolute bottom-0 left-0 pointer-events-none w-100" />
@@ -47,7 +47,7 @@ export const AdhanOverlay: React.FC<AdhanOverlayProps> = ({ state, prayerName, c
 
   // Fallback for 'adhan' and 'iqamah' states
   return (
-    <div id="adhan-overlay" className="absolute inset-0 bg-[#097969] z-[9999] flex items-center justify-center text-center text-white">
+    <div id="adhan-overlay" className="absolute inset-0 bg-emas z-[9999] flex items-center justify-center text-center text-white">
       <div className="flex flex-col items-center justify-center">
         <div className="text-[8rem] mb-5 animate-pulse">🕌</div>
 
