@@ -54,6 +54,14 @@ async function start() {
       console.log(`   Admin:   http://localhost:${PORT}/admin.html`);
     });
 
+    // Best-effort: validasi URL livestream + re-check berkala 6 jam.
+    // Invalid (video dihapus) -> TV otomatis skip mode mecca.
+    const recheckStream = () => {
+      require('./services/streamCheck').recheckStoredStream().catch(() => {});
+    };
+    setImmediate(recheckStream);
+    setInterval(recheckStream, 6 * 3600 * 1000);
+
     // Best-effort auto-sync jadwal Kemenag (bulan ini + depan) max 1x/7 hari.
     // Gagal (offline) tidak masalah: TV pakai hitungan lokal sebagai fallback.
     setImmediate(async () => {

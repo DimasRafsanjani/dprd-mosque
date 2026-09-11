@@ -5,12 +5,13 @@ import { DEFAULT_WALLPAPERS, DEFAULT_QUOTE } from '../utils/offlineData';
 interface BackgroundProps {
   meccaUrl?: string;
   meccaEnabled?: boolean;
+  meccaStreamValid?: string;
   onModeChange?: (mode: string) => void;
   slideshowMode?: string;
   slideshowManualSlide?: string;
 }
 
-export const Background: React.FC<BackgroundProps> = ({ meccaUrl, meccaEnabled = true, onModeChange, slideshowMode = 'auto', slideshowManualSlide = 'wallpaper' }) => {
+export const Background: React.FC<BackgroundProps> = ({ meccaUrl, meccaEnabled = true, meccaStreamValid = '1', onModeChange, slideshowMode = 'auto', slideshowManualSlide = 'wallpaper' }) => {
   const [wallpapers, setWallpapers] = useState<{ filename: string; url?: string }[]>(() => {
     try {
       const cached = localStorage.getItem('cache_/api/wallpapers');
@@ -68,13 +69,13 @@ export const Background: React.FC<BackgroundProps> = ({ meccaUrl, meccaEnabled =
   useEffect(() => {
     const newModes: string[] = ['wallpaper'];
     if (quote?.text_translation || quote?.text_arabic) newModes.push('quote');
-    if (meccaEnabled && meccaUrl && isOnline) newModes.push('mecca');
+    if (meccaEnabled && meccaStreamValid !== '0' && meccaUrl && isOnline) newModes.push('mecca');
 
     setModes(prev => (JSON.stringify(prev) !== JSON.stringify(newModes) ? newModes : prev));
     // Kalau mode aktif hilang (mis. livestream dimatikan saat sedang tampil),
     // langsung kembali ke wallpaper agar tidak stuck di layer kosong.
     setCurrentModeIdx(prev => (prev >= newModes.length ? 0 : prev));
-  }, [wallpapers, quote, meccaUrl, meccaEnabled, isOnline]);
+  }, [wallpapers, quote, meccaUrl, meccaEnabled, meccaStreamValid, isOnline]);
 
   useEffect(() => {
     if (slideshowMode === 'manual') {

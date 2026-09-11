@@ -78,8 +78,25 @@ router.post('/settings', (req, res) => {
       setSetting(key, value);
     }
     res.json({ success: true, message: 'Settings updated successfully' });
+    // URL stream berubah -> validasi ulang di background (hasilnya dibaca TV + badge admin)
+    if (settings && Object.prototype.hasOwnProperty.call(settings, 'mecca_stream_url')) {
+      setImmediate(() => {
+        require('../services/streamCheck').recheckStoredStream(true).catch(() => {});
+      });
+    }
   } catch (err) {
     res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+// POST /api/admin/stream/check — validasi manual URL stream saat ini
+router.post('/stream/check', async (req, res) => {
+  try {
+    const { recheckStoredStream } = require('../services/streamCheck');
+    const result = await recheckStoredStream(true);
+    res.json({ success: true, data: result });
+  } catch (err) {
+    res.status(502).json({ success: false, error: 'Gagal memeriksa: ' + err.message });
   }
 });
 

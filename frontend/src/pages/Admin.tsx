@@ -36,6 +36,8 @@ const Admin: React.FC = () => {
     mosque_name: '',
     mecca_stream_url: '',
     mecca_stream_enabled: '1',
+    mecca_stream_valid: '1',
+    mecca_stream_checked_at: '',
     latitude: '',
     longitude: '',
     hijri_adjustment: '0',
@@ -87,6 +89,28 @@ const Admin: React.FC = () => {
       if (res.data.success) setSchedStatus(res.data.data);
     } catch (err) {
       console.error(err);
+    }
+  };
+
+  const handleCheckStream = async () => {
+    setSyncing(true);
+    try {
+      const res = await axios.post('/api/admin/stream/check', {}, {
+        headers: { 'x-admin-token': token }
+      });
+      const st = (res.data?.data?.status as string) || '';
+      if (st === 'invalid') {
+        showToast('URL tidak valid (video dihapus/private) — mode live otomatis dilewati TV!');
+      } else if (st === 'valid') {
+        showToast('URL valid, siap tayang di TV.');
+      } else {
+        showToast('Tidak bisa dipastikan (jaringan/API), dianggap valid.');
+      }
+      fetchSettings();
+    } catch (err: any) {
+      alert('Gagal memeriksa: ' + (err.response?.data?.error || err.message));
+    } finally {
+      setSyncing(false);
     }
   };
 
@@ -490,6 +514,14 @@ const Admin: React.FC = () => {
                     className="w-5 h-5 accent-dprd-green"
                   />
                   <label htmlFor="mecca_stream_enabled" className="text-slate-700">Tampilkan Livestream Mekkah</label>
+                </div>
+                <div className="mb-4 flex items-center gap-3 flex-wrap">
+                  <span className={`px-3 py-1 rounded-full text-xs font-medium ${settings.mecca_stream_valid === '0' ? 'bg-red-100 text-red-600' : 'bg-emerald-100 text-emerald-700'}`}>
+                    {settings.mecca_stream_valid === '0' ? 'URL tidak valid — dilewati TV' : 'URL OK / belum dicek'}
+                  </span>
+                  <button type="button" onClick={handleCheckStream} disabled={syncing} className="text-sm text-dprd-green hover:underline disabled:opacity-50">
+                    {syncing ? 'Memeriksa...' : 'Cek URL sekarang'}
+                  </button>
                 </div>
                 <div className="mb-4">
                   <label className="block mb-2 text-slate-500 text-sm">Mode Slideshow</label>
